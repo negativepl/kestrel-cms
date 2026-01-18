@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  kestrel-cms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: kestrel-cms
+    restart: unless-stopped
+    environment:
+      - DATABASE_URI=postgresql://payload:Kestrel2024PayloadCMS@payload-postgres:5432/payload
+      - PAYLOAD_SECRET=kestrel-cms-prod-secret-change-this-2024-secure
+      - NEXT_PUBLIC_SERVER_URL=https://cms.presta.trkhspl.com
+      - NODE_ENV=production
+    ports:
+      - "3002:3000"
+    networks:
+      - coolify
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.kestrel-cms.rule=Host(`cms.presta.trkhspl.com`)"
+      - "traefik.http.routers.kestrel-cms.entrypoints=https"
+      - "traefik.http.routers.kestrel-cms.tls=true"
+      - "traefik.http.routers.kestrel-cms.tls.certresolver=letsencrypt"
+      - "traefik.http.services.kestrel-cms.loadbalancer.server.port=3000"
+
+networks:
+  coolify:
+    external: true
