@@ -20,7 +20,7 @@ export const HeroSlides: CollectionConfig = {
       admin: {
         position: 'sidebar',
         components: {
-          Field: '/src/components/TranslateButton#TranslateButton',
+          Field: '@/components/TranslateButton#TranslateButton',
         },
       },
     },
