@@ -1,4 +1,5 @@
 import type { CollectionConfig } from 'payload'
+import { TranslateButton } from '../components/TranslateButton'
 
 export const HeroSlides: CollectionConfig = {
   slug: 'hero-slides',
@@ -9,6 +10,11 @@ export const HeroSlides: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'isActive', 'order', 'updatedAt'],
+    components: {
+      edit: {
+        beforeContent: [TranslateButton],
+      },
+    },
   },
   access: {
     read: () => true,

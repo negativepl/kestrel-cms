@@ -15,6 +15,9 @@ import { ProductCarousels } from './src/collections/ProductCarousels'
 // Globals
 import { SiteSettings } from './src/globals/SiteSettings'
 
+// Endpoints
+import { translateHandler } from './src/endpoints/translate'
+
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
@@ -27,6 +30,10 @@ export default buildConfig({
     locales: [
       { label: 'Polski', code: 'pl' },
       { label: 'English', code: 'en' },
+      { label: 'Deutsch', code: 'de' },
+      { label: 'Română', code: 'ro' },
+      { label: 'Čeština', code: 'cs' },
+      { label: 'Magyar', code: 'hu' },
     ],
     defaultLocale: 'pl',
     fallback: true,
@@ -69,5 +76,12 @@ export default buildConfig({
     'http://localhost:3001',
     'https://presta.trkhspl.com',
     'https://cms.presta.trkhspl.com',
+  ],
+  endpoints: [
+    {
+      path: '/translate',
+      method: 'post',
+      handler: translateHandler,
+    },
   ],
 })

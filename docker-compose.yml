@@ -12,6 +12,7 @@ services:
       - PAYLOAD_SECRET=kestrel-cms-prod-secret-change-this-2024-secure
       - NEXT_PUBLIC_SERVER_URL=https://cms.presta.trkhspl.com
       - NODE_ENV=production
+      - OPENAI_API_KEY=${OPENAI_API_KEY:-}
     ports:
       - "3002:3000"
     networks:
