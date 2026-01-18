@@ -18,6 +18,7 @@ export const HeroSlides: CollectionConfig = {
       name: 'translateButton',
       type: 'ui',
       admin: {
+        position: 'sidebar',
         components: {
           Field: '/src/components/TranslateButton#TranslateButton',
         },
