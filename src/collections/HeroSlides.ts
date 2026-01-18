@@ -19,11 +19,13 @@ export const HeroSlides: CollectionConfig = {
       type: 'text',
       label: 'Slide Title',
       required: true,
+      localized: true,
     },
     {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle',
+      localized: true,
     },
     {
       name: 'image',
@@ -42,6 +44,7 @@ export const HeroSlides: CollectionConfig = {
       name: 'buttonText',
       type: 'text',
       label: 'Button Text',
+      localized: true,
     },
     {
       name: 'buttonLink',

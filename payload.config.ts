@@ -23,6 +23,14 @@ export default buildConfig({
     fallbackLanguage: 'en',
     supportedLanguages: { en },
   },
+  localization: {
+    locales: [
+      { label: 'Polski', code: 'pl' },
+      { label: 'English', code: 'en' },
+    ],
+    defaultLocale: 'pl',
+    fallback: true,
+  },
   admin: {
     user: Users.slug,
     meta: {
