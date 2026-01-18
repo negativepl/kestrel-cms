@@ -9,21 +9,16 @@ export const HeroSlides: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'isActive', 'order', 'updatedAt'],
+    components: {
+      edit: {
+        SaveButton: '@/components/SaveWithTranslate#SaveWithTranslate',
+      },
+    },
   },
   access: {
     read: () => true,
   },
   fields: [
-    {
-      name: 'translateButton',
-      type: 'ui',
-      admin: {
-        position: 'sidebar',
-        components: {
-          Field: '@/components/TranslateButton#TranslateButton',
-        },
-      },
-    },
     {
       name: 'title',
       type: 'text',
@@ -96,6 +91,24 @@ export const HeroSlides: CollectionConfig = {
       type: 'checkbox',
       label: 'Active',
       defaultValue: true,
+    },
+    {
+      name: 'displayLocales',
+      type: 'select',
+      label: 'Display for languages',
+      hasMany: true,
+      options: [
+        { label: 'Polski', value: 'pl' },
+        { label: 'English', value: 'en' },
+        { label: 'Deutsch', value: 'de' },
+        { label: 'Română', value: 'ro' },
+        { label: 'Čeština', value: 'cs' },
+        { label: 'Magyar', value: 'hu' },
+      ],
+      defaultValue: ['pl', 'en', 'de', 'ro', 'cs', 'hu'],
+      admin: {
+        description: 'Select languages where this slide should be displayed. Leave all selected to show everywhere.',
+      },
     },
   ],
 }

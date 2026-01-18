@@ -73,11 +73,11 @@ export const TranslateButton: React.FC = () => {
         }
       }
 
-      setStatus('✅ Translated to all languages!')
+      setStatus('Translated to all languages!')
       setTimeout(() => setStatus(null), 3000)
     } catch (error) {
       console.error('Translation error:', error)
-      setStatus('❌ Translation failed')
+      setStatus('Translation failed')
     } finally {
       setIsTranslating(false)
     }
@@ -87,33 +87,53 @@ export const TranslateButton: React.FC = () => {
     <div style={{
       padding: '16px',
       marginBottom: '16px',
-      background: 'var(--theme-elevation-50)',
-      borderRadius: '4px',
-      border: '1px solid var(--theme-elevation-100)'
+      background: 'var(--theme-elevation-100)',
+      borderRadius: '8px',
+      border: '1px solid var(--theme-elevation-200)'
     }}>
-      <div style={{ marginBottom: '8px', fontWeight: 'bold' }}>
-        🤖 AI Translation
+      <div style={{
+        marginBottom: '8px',
+        fontWeight: '600',
+        fontSize: '14px',
+        color: 'var(--theme-text)'
+      }}>
+        AI Translation
       </div>
-      <div style={{ marginBottom: '12px', fontSize: '13px', color: 'var(--theme-elevation-600)' }}>
-        Translate text fields from {localeLabels[currentLocale] || currentLocale} to all other languages using AI.
+      <div style={{
+        marginBottom: '12px',
+        fontSize: '13px',
+        color: 'var(--theme-elevation-500)',
+        lineHeight: '1.4'
+      }}>
+        Translate from {localeLabels[currentLocale] || currentLocale} to all other languages.
       </div>
       <button
         onClick={handleTranslate}
         disabled={isTranslating}
         style={{
-          padding: '8px 16px',
-          background: isTranslating ? 'var(--theme-elevation-200)' : 'var(--theme-elevation-800)',
-          color: isTranslating ? 'var(--theme-elevation-600)' : 'white',
+          padding: '10px 16px',
+          background: isTranslating ? 'var(--theme-elevation-200)' : '#3b82f6',
+          color: isTranslating ? 'var(--theme-elevation-500)' : '#ffffff',
           border: 'none',
-          borderRadius: '4px',
+          borderRadius: '6px',
           cursor: isTranslating ? 'not-allowed' : 'pointer',
           fontSize: '14px',
+          fontWeight: '500',
+          width: '100%',
+          transition: 'background 0.2s ease',
         }}
       >
-        {isTranslating ? '⏳ Translating...' : '🌍 Translate to all languages'}
+        {isTranslating ? 'Translating...' : 'Translate to all languages'}
       </button>
       {status && (
-        <div style={{ marginTop: '8px', fontSize: '13px' }}>
+        <div style={{
+          marginTop: '10px',
+          fontSize: '13px',
+          padding: '8px 12px',
+          borderRadius: '4px',
+          background: status.includes('Translated') ? 'rgba(34, 197, 94, 0.15)' : status.includes('failed') ? 'rgba(239, 68, 68, 0.15)' : 'var(--theme-elevation-150)',
+          color: status.includes('Translated') ? '#22c55e' : status.includes('failed') ? '#ef4444' : 'var(--theme-text)'
+        }}>
           {status}
         </div>
       )}
