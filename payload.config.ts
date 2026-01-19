@@ -11,6 +11,7 @@ import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
 import { HeroSlides } from './src/collections/HeroSlides'
 import { ProductCarousels } from './src/collections/ProductCarousels'
+import { Navigation } from './src/collections/Navigation'
 
 // Globals
 import { SiteSettings } from './src/globals/SiteSettings'
@@ -49,6 +50,7 @@ export default buildConfig({
     Media,
     HeroSlides,
     ProductCarousels,
+    Navigation,
   ],
   globals: [
     SiteSettings,
