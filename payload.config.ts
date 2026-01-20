@@ -18,6 +18,7 @@ import { SiteSettings } from './src/globals/SiteSettings'
 
 // Endpoints
 import { translateHandler } from './src/endpoints/translate'
+import { getPrestashopCategories } from './src/endpoints/prestashopCategories'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -84,6 +85,11 @@ export default buildConfig({
       path: '/translate',
       method: 'post',
       handler: translateHandler,
+    },
+    {
+      path: '/prestashop-categories',
+      method: 'get',
+      handler: getPrestashopCategories,
     },
   ],
 })

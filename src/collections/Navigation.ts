@@ -10,6 +10,7 @@ export const Navigation: CollectionConfig = {
     useAsTitle: 'name',
     defaultColumns: ['name', 'slug', 'isActive', 'updatedAt'],
     description: 'Configure mega menu structure - which categories appear where',
+    group: 'Navigation',
   },
   access: {
     read: () => true,
@@ -68,19 +69,13 @@ export const Navigation: CollectionConfig = {
         {
           name: 'prestashopCategoryId',
           type: 'number',
-          label: 'PrestaShop Category ID',
+          label: 'PrestaShop Category',
           required: true,
           admin: {
-            description: 'Main category ID from PrestaShop (used for "View All" link)',
-          },
-        },
-        {
-          name: 'order',
-          type: 'number',
-          label: 'Order',
-          defaultValue: 0,
-          admin: {
-            description: 'Lower number = displays first',
+            description: 'Main category from PrestaShop (used for "View All" link)',
+            components: {
+              Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
+            },
           },
         },
         {
@@ -103,57 +98,58 @@ export const Navigation: CollectionConfig = {
             description: 'Define columns that appear in the mega menu dropdown',
           },
           fields: [
+            // Categories in this column (stacked vertically)
             {
-              name: 'title',
-              type: 'text',
-              label: 'Column Title (optional)',
-              localized: true,
-              admin: {
-                description: 'Header text for this column (leave empty to use category name)',
+              name: 'categories',
+              type: 'array',
+              label: 'Categories in Column',
+              labels: {
+                singular: 'Category Section',
+                plural: 'Category Sections',
               },
-            },
-            {
-              name: 'categoryId',
-              type: 'number',
-              label: 'PrestaShop Category ID',
-              required: true,
               admin: {
-                description: 'Category ID - subcategories will be fetched automatically',
+                initCollapsed: false,
+                description: 'Add multiple categories to stack them vertically in this column',
               },
+              fields: [
+                {
+                  name: 'categoryId',
+                  type: 'number',
+                  label: 'PrestaShop Category',
+                  required: true,
+                  admin: {
+                    description: 'Category - subcategories will be fetched automatically',
+                    components: {
+                      Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
+                    },
+                  },
+                },
+                {
+                  name: 'title',
+                  type: 'text',
+                  label: 'Section Title (optional)',
+                  localized: true,
+                  admin: {
+                    description: 'Header text (leave empty to use category name)',
+                  },
+                },
+                {
+                  name: 'showTitle',
+                  type: 'checkbox',
+                  label: 'Show title',
+                  defaultValue: true,
+                },
+                {
+                  name: 'visibleItemsCount',
+                  type: 'number',
+                  label: 'Visible Items',
+                  defaultValue: 10,
+                  admin: {
+                    description: 'How many items to show (rest under "Older models")',
+                  },
+                },
+              ],
             },
-            {
-              name: 'visibleItemsCount',
-              type: 'number',
-              label: 'Widoczne elementy',
-              defaultValue: 10,
-              admin: {
-                description: 'Ile elementów pokazać domyślnie (reszta pod "Starsze modele")',
-              },
-            },
-            {
-              name: 'showTitle',
-              type: 'checkbox',
-              label: 'Show column title',
-              defaultValue: true,
-            },
-            {
-              name: 'order',
-              type: 'number',
-              label: 'Order',
-              defaultValue: 0,
-            },
-            {
-              name: 'columnGroup',
-              type: 'number',
-              label: 'Column Group',
-              defaultValue: 0,
-              admin: {
-                description: 'Items with the same group number are stacked in one visual column (e.g., iPad=1, MacBook=1 → stacked together)',
-              },
-            },
-            // TODO: featuredProductIds - wyróżnione produkty w kolumnie
-            // TODO: featuredImage - obrazek promocyjny w kolumnie
-            // TODO: customLinks - własne linki zamiast kategorii PS
           ],
         },
       ],
