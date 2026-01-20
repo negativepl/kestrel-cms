@@ -142,6 +142,15 @@ export const Navigation: CollectionConfig = {
               label: 'Order',
               defaultValue: 0,
             },
+            {
+              name: 'columnGroup',
+              type: 'number',
+              label: 'Column Group',
+              defaultValue: 0,
+              admin: {
+                description: 'Items with the same group number are stacked in one visual column (e.g., iPad=1, MacBook=1 → stacked together)',
+              },
+            },
             // TODO: featuredProductIds - wyróżnione produkty w kolumnie
             // TODO: featuredImage - obrazek promocyjny w kolumnie
             // TODO: customLinks - własne linki zamiast kategorii PS
