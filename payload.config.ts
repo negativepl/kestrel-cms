@@ -12,6 +12,7 @@ import { Media } from './src/collections/Media'
 import { HeroSlides } from './src/collections/HeroSlides'
 import { ProductCarousels } from './src/collections/ProductCarousels'
 import { Navigation } from './src/collections/Navigation'
+import { MenuItems } from './src/collections/MenuItems'
 
 // Globals
 import { SiteSettings } from './src/globals/SiteSettings'
@@ -51,6 +52,7 @@ export default buildConfig({
     Media,
     HeroSlides,
     ProductCarousels,
+    MenuItems,
     Navigation,
   ],
   globals: [
