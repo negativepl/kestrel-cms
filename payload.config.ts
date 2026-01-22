@@ -13,6 +13,7 @@ import { HeroSlides } from './src/collections/HeroSlides'
 import { ProductCarousels } from './src/collections/ProductCarousels'
 import { Navigation } from './src/collections/Navigation'
 import { MenuItems } from './src/collections/MenuItems'
+import { FeaturedCategories } from './src/collections/FeaturedCategories'
 
 // Globals
 import { SiteSettings } from './src/globals/SiteSettings'
@@ -54,6 +55,7 @@ export default buildConfig({
     ProductCarousels,
     MenuItems,
     Navigation,
+    FeaturedCategories,
   ],
   globals: [
     SiteSettings,
