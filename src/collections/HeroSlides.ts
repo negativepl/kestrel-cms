@@ -23,8 +23,11 @@ export const HeroSlides: CollectionConfig = {
       name: 'title',
       type: 'text',
       label: 'Slide Title',
-      required: true,
+      required: false,
       localized: true,
+      admin: {
+        description: 'Leave empty for image-only slide (no overlay)',
+      },
     },
     {
       name: 'subtitle',
