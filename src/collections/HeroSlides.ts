@@ -36,14 +36,20 @@ export const HeroSlides: CollectionConfig = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      label: 'Background Image',
+      label: 'Background Image (Desktop)',
       required: true,
+      admin: {
+        description: 'Recommended: 1920×800px (2.4:1 ratio). Image will be cropped to fit.',
+      },
     },
     {
       name: 'mobileImage',
       type: 'upload',
       relationTo: 'media',
       label: 'Mobile Image (optional)',
+      admin: {
+        description: 'Recommended: 768×600px (~1.3:1 ratio). Shown on screens < 768px width.',
+      },
     },
     {
       name: 'buttonText',
