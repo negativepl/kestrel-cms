@@ -51,7 +51,7 @@ export const HeroSlides: CollectionConfig = {
       relationTo: 'media',
       label: 'Mobile Image (optional)',
       admin: {
-        description: 'Recommended: 768×600px (~1.3:1 ratio). Shown on screens < 768px width.',
+        description: 'Recommended: 768×432px (16:9 ratio). Shown on screens < 768px width.',
       },
     },
     {
