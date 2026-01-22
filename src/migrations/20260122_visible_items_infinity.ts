@@ -1,9 +1,12 @@
 import { MigrateUpArgs, MigrateDownArgs } from '@payloadcms/db-postgres'
 
+// Type assertion helper - menu-items is valid but not in generated types yet
+const MENU_ITEMS_COLLECTION = 'menu-items' as 'media'
+
 export async function up({ payload }: MigrateUpArgs): Promise<void> {
   // Get all menu items
   const menuItems = await payload.find({
-    collection: 'menu-items',
+    collection: MENU_ITEMS_COLLECTION,
     limit: 1000,
     depth: 0,
   })
@@ -23,13 +26,13 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
 
     if (hasChanges) {
       await payload.update({
-        collection: 'menu-items',
+        collection: MENU_ITEMS_COLLECTION,
         id: item.id,
         data: {
           categories: updatedCategories,
-        },
+        } as any,
       })
-      console.log(`Updated menu item "${item.label}" - changed visibleItemsCount from 10 to 0`)
+      console.log(`Updated menu item "${(item as any).label}" - changed visibleItemsCount from 10 to 0`)
     }
   }
 }
@@ -37,7 +40,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
 export async function down({ payload }: MigrateDownArgs): Promise<void> {
   // Revert: change 0 back to 10
   const menuItems = await payload.find({
-    collection: 'menu-items',
+    collection: MENU_ITEMS_COLLECTION,
     limit: 1000,
     depth: 0,
   })
@@ -56,13 +59,13 @@ export async function down({ payload }: MigrateDownArgs): Promise<void> {
 
     if (hasChanges) {
       await payload.update({
-        collection: 'menu-items',
+        collection: MENU_ITEMS_COLLECTION,
         id: item.id,
         data: {
           categories: updatedCategories,
-        },
+        } as any,
       })
-      console.log(`Reverted menu item "${item.label}" - changed visibleItemsCount from 0 to 10`)
+      console.log(`Reverted menu item "${(item as any).label}" - changed visibleItemsCount from 0 to 10`)
     }
   }
 }
