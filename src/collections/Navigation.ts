@@ -44,7 +44,7 @@ export const Navigation: CollectionConfig = {
     {
       name: 'items',
       type: 'relationship',
-      relationTo: 'menu-items',
+      relationTo: 'menu-items' as 'media', // Type assertion - menu-items is valid but not yet in generated types
       hasMany: true,
       label: 'Menu Items',
       admin: {
