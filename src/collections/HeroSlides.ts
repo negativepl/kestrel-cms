@@ -17,8 +17,6 @@ export const HeroSlides: CollectionConfig = {
   },
   access: {
     read: () => true,
-    create: () => true, // TODO: Remove after seeding
-    update: () => true, // TODO: Remove after seeding
   },
   fields: [
     {
