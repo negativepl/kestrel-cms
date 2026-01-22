@@ -12,7 +12,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
   })
 
   // Update each menu item's categories where visibleItemsCount is 10
-  for (const item of menuItems.docs) {
+  for (const item of menuItems.docs as any[]) {
     if (!item.categories || !Array.isArray(item.categories)) continue
 
     let hasChanges = false
@@ -32,7 +32,7 @@ export async function up({ payload }: MigrateUpArgs): Promise<void> {
           categories: updatedCategories,
         } as any,
       })
-      console.log(`Updated menu item "${(item as any).label}" - changed visibleItemsCount from 10 to 0`)
+      console.log(`Updated menu item "${item.label}" - changed visibleItemsCount from 10 to 0`)
     }
   }
 }
@@ -45,7 +45,7 @@ export async function down({ payload }: MigrateDownArgs): Promise<void> {
     depth: 0,
   })
 
-  for (const item of menuItems.docs) {
+  for (const item of menuItems.docs as any[]) {
     if (!item.categories || !Array.isArray(item.categories)) continue
 
     let hasChanges = false
@@ -65,7 +65,7 @@ export async function down({ payload }: MigrateDownArgs): Promise<void> {
           categories: updatedCategories,
         } as any,
       })
-      console.log(`Reverted menu item "${(item as any).label}" - changed visibleItemsCount from 0 to 10`)
+      console.log(`Reverted menu item "${item.label}" - changed visibleItemsCount from 0 to 10`)
     }
   }
 }
