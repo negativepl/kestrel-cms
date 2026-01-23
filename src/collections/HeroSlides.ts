@@ -7,8 +7,8 @@ export const HeroSlides: CollectionConfig = {
     plural: 'Hero Slides',
   },
   admin: {
-    useAsTitle: 'title',
-    defaultColumns: ['title', 'isActive', 'order', 'updatedAt'],
+    useAsTitle: 'internalName',
+    defaultColumns: ['internalName', 'isActive', 'order', 'updatedAt'],
     components: {
       edit: {
         SaveButton: '@/components/SaveWithTranslate#SaveWithTranslate',
@@ -19,6 +19,15 @@ export const HeroSlides: CollectionConfig = {
     read: () => true,
   },
   fields: [
+    {
+      name: 'internalName',
+      type: 'text',
+      label: 'Internal Name',
+      required: true,
+      admin: {
+        description: 'For admin panel only - not displayed on website',
+      },
+    },
     {
       name: 'title',
       type: 'text',
@@ -55,6 +64,17 @@ export const HeroSlides: CollectionConfig = {
       name: 'buttonLink',
       type: 'text',
       label: 'Button Link',
+    },
+    {
+      name: 'categoryId',
+      type: 'number',
+      label: 'Link to Category',
+      admin: {
+        description: 'Optional: Click on slide will go to this category',
+        components: {
+          Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
+        },
+      },
     },
     {
       name: 'textColor',
