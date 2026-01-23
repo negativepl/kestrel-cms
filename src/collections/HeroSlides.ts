@@ -39,19 +39,10 @@ export const HeroSlides: CollectionConfig = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
-      label: 'Background Image (Desktop)',
+      label: 'Background Image',
       required: true,
       admin: {
-        description: 'Recommended: 1920×800px (2.4:1 ratio). Image will be cropped to fit.',
-      },
-    },
-    {
-      name: 'mobileImage',
-      type: 'upload',
-      relationTo: 'media',
-      label: 'Mobile Image (optional)',
-      admin: {
-        description: 'Recommended: 768×432px (16:9 ratio). Shown on screens < 768px width.',
+        description: 'Recommended: 16:9 aspect ratio (e.g., 1920×1080px or 1280×720px). Images are displayed in a 3-column grid on desktop and carousel on mobile.',
       },
     },
     {
