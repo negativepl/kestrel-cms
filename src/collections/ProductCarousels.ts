@@ -63,9 +63,12 @@ export const ProductCarousels: CollectionConfig = {
     {
       name: 'categoryId',
       type: 'number',
-      label: 'PrestaShop Category ID',
+      label: 'PrestaShop Category',
       admin: {
         condition: (data) => data?.carouselType === 'category',
+        components: {
+          Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
+        },
       },
     },
     {
