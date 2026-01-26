@@ -14,6 +14,7 @@ import { ProductCarousels } from './src/collections/ProductCarousels'
 import { Navigation } from './src/collections/Navigation'
 import { MenuItems } from './src/collections/MenuItems'
 import { FeaturedCategories } from './src/collections/FeaturedCategories'
+import { CategoryBanners } from './src/collections/CategoryBanners'
 
 // Globals
 import { SiteSettings } from './src/globals/SiteSettings'
@@ -56,6 +57,7 @@ export default buildConfig({
     MenuItems,
     Navigation,
     FeaturedCategories,
+    CategoryBanners,
   ],
   globals: [
     SiteSettings,
