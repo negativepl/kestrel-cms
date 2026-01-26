@@ -115,6 +115,41 @@ export const ProductCarousels: CollectionConfig = {
         description: 'e.g. #f5f5f5, white, transparent',
       },
     },
+    // Display Options
+    {
+      name: 'displayOptions',
+      type: 'collapsible',
+      label: 'Display Options',
+      admin: {
+        initCollapsed: true,
+      },
+      fields: [
+        {
+          name: 'hideOutOfStock',
+          type: 'checkbox',
+          label: 'Hide Out of Stock Products',
+          defaultValue: false,
+        },
+        {
+          name: 'showBadges',
+          type: 'checkbox',
+          label: 'Show Product Badges (New, Sale, etc.)',
+          defaultValue: true,
+        },
+        {
+          name: 'showPrices',
+          type: 'checkbox',
+          label: 'Show Prices',
+          defaultValue: true,
+        },
+        {
+          name: 'showAddToCart',
+          type: 'checkbox',
+          label: 'Show Add to Cart Button',
+          defaultValue: true,
+        },
+      ],
+    },
     {
       name: 'order',
       type: 'number',
