@@ -69,6 +69,22 @@ export const ProductCarousels: CollectionConfig = {
       },
     },
     {
+      name: 'sortBy',
+      type: 'select',
+      label: 'Sort By',
+      options: [
+        { label: 'Newest', value: 'date' },
+        { label: 'Bestsellers', value: 'sales' },
+        { label: 'Name (A-Z)', value: 'name' },
+        { label: 'Price (Low to High)', value: 'price-asc' },
+        { label: 'Price (High to Low)', value: 'price-desc' },
+      ],
+      defaultValue: 'date',
+      admin: {
+        condition: (data) => data?.carouselType === 'category' || data?.carouselType === 'product-ids',
+      },
+    },
+    {
       name: 'limit',
       type: 'number',
       label: 'Product Limit',
