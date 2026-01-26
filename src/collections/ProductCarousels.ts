@@ -46,7 +46,6 @@ export const ProductCarousels: CollectionConfig = {
         { label: 'PrestaShop Category', value: 'category' },
         { label: 'Bestsellers', value: 'bestsellers' },
         { label: 'New Products', value: 'new-products' },
-        { label: 'Sale', value: 'sale' },
       ],
       required: true,
       defaultValue: 'product-ids',
