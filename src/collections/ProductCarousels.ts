@@ -9,6 +9,11 @@ export const ProductCarousels: CollectionConfig = {
   admin: {
     useAsTitle: 'title',
     defaultColumns: ['title', 'location', 'isActive', 'order'],
+    components: {
+      edit: {
+        SaveButton: '@/components/SaveWithTranslate#SaveWithTranslate',
+      },
+    },
   },
   access: {
     read: () => true,
@@ -19,11 +24,13 @@ export const ProductCarousels: CollectionConfig = {
       type: 'text',
       label: 'Section Title',
       required: true,
+      localized: true,
     },
     {
       name: 'subtitle',
       type: 'text',
       label: 'Subtitle (optional)',
+      localized: true,
     },
     {
       name: 'location',
@@ -162,6 +169,24 @@ export const ProductCarousels: CollectionConfig = {
       type: 'checkbox',
       label: 'Active',
       defaultValue: true,
+    },
+    {
+      name: 'displayLocales',
+      type: 'select',
+      label: 'Display for languages',
+      hasMany: true,
+      options: [
+        { label: 'Polski', value: 'pl' },
+        { label: 'English', value: 'en' },
+        { label: 'Deutsch', value: 'de' },
+        { label: 'Română', value: 'ro' },
+        { label: 'Čeština', value: 'cs' },
+        { label: 'Magyar', value: 'hu' },
+      ],
+      defaultValue: ['pl', 'en', 'de', 'ro', 'cs', 'hu'],
+      admin: {
+        description: 'Select languages where this carousel should be displayed. Leave all selected to show everywhere.',
+      },
     },
   ],
 }
