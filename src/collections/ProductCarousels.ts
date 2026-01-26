@@ -117,7 +117,6 @@ export const ProductCarousels: CollectionConfig = {
     },
     // Display Options
     {
-      name: 'displayOptions',
       type: 'collapsible',
       label: 'Display Options',
       admin: {
