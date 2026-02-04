@@ -14,16 +14,37 @@ export const SiteSettings: GlobalConfig = {
           label: 'Branding',
           fields: [
             {
+              name: 'logoType',
+              type: 'select',
+              label: 'Logo Type',
+              options: [
+                { label: 'Text (Store Name)', value: 'text' },
+                { label: 'Image', value: 'image' },
+              ],
+              defaultValue: 'text',
+              admin: {
+                description: 'Choose whether to display logo as text or image',
+              },
+            },
+            {
               name: 'logo',
               type: 'upload',
               relationTo: 'media',
               label: 'Main Logo',
+              admin: {
+                condition: (data) => data?.logoType === 'image',
+                description: 'Logo for light backgrounds (recommended: PNG with transparency)',
+              },
             },
             {
-              name: 'logoWhite',
+              name: 'logoDark',
               type: 'upload',
               relationTo: 'media',
-              label: 'White Logo (for dark backgrounds)',
+              label: 'Logo for Dark Mode',
+              admin: {
+                condition: (data) => data?.logoType === 'image',
+                description: 'Logo for dark backgrounds (optional, falls back to main logo)',
+              },
             },
             {
               name: 'favicon',
@@ -34,13 +55,29 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'siteName',
               type: 'text',
-              label: 'Store Name',
-              defaultValue: 'Kestrel',
+              label: 'Store Name (B2C)',
+              defaultValue: 'Home Screen',
+              required: true,
+              admin: {
+                description: 'Store name displayed in header, footer, and browser tab',
+              },
+            },
+            {
+              name: 'siteNameB2B',
+              type: 'text',
+              label: 'Store Name (B2B)',
+              admin: {
+                description: 'Optional: Different name for B2B store. Leave empty to use main name.',
+              },
             },
             {
               name: 'tagline',
               type: 'text',
               label: 'Tagline',
+              localized: true,
+              admin: {
+                description: 'Short description shown below logo or in SEO',
+              },
             },
           ],
         },
@@ -212,17 +249,28 @@ export const SiteSettings: GlobalConfig = {
               name: 'defaultMetaTitle',
               type: 'text',
               label: 'Default Meta Title',
+              localized: true,
+              admin: {
+                description: 'Browser tab title for homepage. Use {siteName} as placeholder.',
+              },
             },
             {
               name: 'defaultMetaDescription',
               type: 'textarea',
               label: 'Default Meta Description',
+              localized: true,
+              admin: {
+                description: 'SEO description for homepage',
+              },
             },
             {
               name: 'ogImage',
               type: 'upload',
               relationTo: 'media',
               label: 'Default OG Image',
+              admin: {
+                description: 'Image shown when sharing on social media (recommended: 1200x630px)',
+              },
             },
           ],
         },
