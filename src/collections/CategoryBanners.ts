@@ -101,5 +101,19 @@ export const CategoryBanners: CollectionConfig = {
         description: 'Select languages where this banner should be displayed.',
       },
     },
+    {
+      name: 'displayStores',
+      type: 'select',
+      label: 'Display for Stores',
+      hasMany: true,
+      options: [
+        { label: 'B2C (Retail)', value: 'b2c' },
+        { label: 'B2B (Wholesale)', value: 'b2b' },
+      ],
+      defaultValue: ['b2c', 'b2b'],
+      admin: {
+        description: 'Select stores where this banner should be displayed.',
+      },
+    },
   ],
 }
