@@ -22,6 +22,7 @@ import { SiteSettings } from './src/globals/SiteSettings'
 // Endpoints
 import { translateHandler } from './src/endpoints/translate'
 import { getPrestashopCategories } from './src/endpoints/prestashopCategories'
+import { revalidateEndpoint } from './src/endpoints/revalidate'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -47,6 +48,9 @@ export default buildConfig({
     user: Users.slug,
     meta: {
       titleSuffix: ' | Kestrel CMS',
+    },
+    components: {
+      beforeNavLinks: ['@/components/ClearCacheButton'],
     },
   },
   collections: [
@@ -97,5 +101,6 @@ export default buildConfig({
       method: 'get',
       handler: getPrestashopCategories,
     },
+    revalidateEndpoint,
   ],
 })
