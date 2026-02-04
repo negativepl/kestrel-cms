@@ -32,7 +32,7 @@ export const Media: CollectionConfig = {
       },
     ],
     adminThumbnail: 'thumbnail',
-    mimeTypes: ['image/*'],
+    mimeTypes: ['image/*', 'image/svg+xml'],
   },
   fields: [
     {
