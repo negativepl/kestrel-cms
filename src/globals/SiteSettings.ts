@@ -18,40 +18,77 @@ export const SiteSettings: GlobalConfig = {
               type: 'select',
               label: 'Logo Type',
               options: [
-                { label: 'Text (Store Name)', value: 'text' },
-                { label: 'Image', value: 'image' },
+                { label: 'Text (Store Name only)', value: 'text' },
+                { label: 'Image (Logo only)', value: 'image' },
+                { label: 'Icon + Text (Icon with Store Name)', value: 'icon-text' },
               ],
               defaultValue: 'text',
               admin: {
-                description: 'Choose whether to display logo as text or image',
+                description: 'Choose how to display the logo in header',
               },
             },
+            // B2C Logo
             {
               name: 'logo',
               type: 'upload',
               relationTo: 'media',
-              label: 'Main Logo',
+              label: 'Logo B2C (Light Mode)',
               admin: {
-                condition: (data) => data?.logoType === 'image',
-                description: 'Logo for light backgrounds (recommended: PNG with transparency)',
+                condition: (data) => data?.logoType === 'image' || data?.logoType === 'icon-text',
+                description: 'Logo/icon for B2C store on light backgrounds',
               },
             },
             {
               name: 'logoDark',
               type: 'upload',
               relationTo: 'media',
-              label: 'Logo for Dark Mode',
+              label: 'Logo B2C (Dark Mode)',
               admin: {
-                condition: (data) => data?.logoType === 'image',
-                description: 'Logo for dark backgrounds (optional, falls back to main logo)',
+                condition: (data) => data?.logoType === 'image' || data?.logoType === 'icon-text',
+                description: 'Optional: Logo/icon for B2C on dark backgrounds (falls back to main)',
               },
             },
+            // B2B Logo
+            {
+              name: 'logoB2B',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Logo B2B (Light Mode)',
+              admin: {
+                condition: (data) => data?.logoType === 'image' || data?.logoType === 'icon-text',
+                description: 'Optional: Different logo/icon for B2B store (falls back to B2C logo)',
+              },
+            },
+            {
+              name: 'logoB2BDark',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Logo B2B (Dark Mode)',
+              admin: {
+                condition: (data) => data?.logoType === 'image' || data?.logoType === 'icon-text',
+                description: 'Optional: Logo/icon for B2B on dark backgrounds',
+              },
+            },
+            // Favicons
             {
               name: 'favicon',
               type: 'upload',
               relationTo: 'media',
-              label: 'Favicon',
+              label: 'Favicon B2C',
+              admin: {
+                description: 'Browser tab icon for B2C (recommended: 32x32 PNG or ICO)',
+              },
             },
+            {
+              name: 'faviconB2B',
+              type: 'upload',
+              relationTo: 'media',
+              label: 'Favicon B2B',
+              admin: {
+                description: 'Optional: Different favicon for B2B store',
+              },
+            },
+            // Store Names
             {
               name: 'siteName',
               type: 'text',
