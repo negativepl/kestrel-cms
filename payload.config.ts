@@ -15,6 +15,7 @@ import { Navigation } from './src/collections/Navigation'
 import { MenuItems } from './src/collections/MenuItems'
 import { FeaturedCategories } from './src/collections/FeaturedCategories'
 import { CategoryBanners } from './src/collections/CategoryBanners'
+import { MegaMenuFeatured } from './src/collections/MegaMenuFeatured'
 
 // Globals
 import { SiteSettings } from './src/globals/SiteSettings'
@@ -62,6 +63,7 @@ export default buildConfig({
     Navigation,
     FeaturedCategories,
     CategoryBanners,
+    MegaMenuFeatured,
   ],
   globals: [
     SiteSettings,
