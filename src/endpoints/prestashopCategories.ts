@@ -1,13 +1,11 @@
 import type { PayloadHandler } from 'payload'
 
-type BinShopCategory = {
+type PrestaShopCategory = {
   id: number
-  slug: string
-  type: string
-  label: string
-  url: string
-  children: BinShopCategory[]
-  depth: number
+  id_parent: number
+  level_depth: number
+  active: string
+  name: { id: number; value: string }[]
 }
 
 type CategoryTreeNode = {
@@ -22,36 +20,42 @@ type FlatCategory = {
   level: number
 }
 
-const transformToTree = (items: BinShopCategory[]): CategoryTreeNode[] => {
-  return items
-    .filter((item) => item.type === 'category')
-    .map((item) => ({
-      id: item.id,
-      name: item.label,
-      children: item.children ? transformToTree(item.children) : [],
+// Build tree structure from flat list using id_parent
+const buildTree = (
+  categories: PrestaShopCategory[],
+  parentId: number = 2, // "Strona główna" is the main parent (id=2)
+  langId: number = 1
+): CategoryTreeNode[] => {
+  return categories
+    .filter((cat) => cat.id_parent === parentId && cat.active === '1')
+    .map((cat) => ({
+      id: cat.id,
+      name: cat.name.find((n) => n.id === langId)?.value || cat.name[0]?.value || `#${cat.id}`,
+      children: buildTree(categories, cat.id, langId),
     }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'pl'))
 }
 
-const flattenCategories = (items: BinShopCategory[], result: FlatCategory[] = []): FlatCategory[] => {
-  for (const item of items) {
-    if (item.type === 'category') {
-      result.push({
-        id: item.id,
-        name: item.label,
-        level: item.depth || 1,
-      })
-      if (item.children && item.children.length > 0) {
-        flattenCategories(item.children, result)
-      }
-    }
-  }
-  return result
+// Flatten categories for simple select
+const flattenTree = (
+  categories: PrestaShopCategory[],
+  langId: number = 1
+): FlatCategory[] => {
+  return categories
+    .filter((cat) => cat.active === '1' && cat.id > 2) // Skip root and "Strona główna"
+    .map((cat) => ({
+      id: cat.id,
+      name: cat.name.find((n) => n.id === langId)?.value || cat.name[0]?.value || `#${cat.id}`,
+      level: cat.level_depth || 1,
+    }))
+    .sort((a, b) => a.name.localeCompare(b.name, 'pl'))
 }
 
 export const getPrestashopCategories: PayloadHandler = async (req) => {
   const apiUrl = process.env.PRESTASHOP_API_URL
+  const apiKey = process.env.PRESTASHOP_API_KEY
 
-  if (!apiUrl) {
+  if (!apiUrl || !apiKey) {
     return Response.json(
       { error: 'PrestaShop API not configured' },
       { status: 500 }
@@ -59,38 +63,38 @@ export const getPrestashopCategories: PayloadHandler = async (req) => {
   }
 
   try {
-    // Use BinShop REST API - much faster than native PrestaShop WebService
-    const url = `${apiUrl}/rest/bootstrap`
+    // Use native PrestaShop WebService API to get ALL categories
+    const url = `${apiUrl}/api/categories?output_format=JSON&display=%5Bid,name,id_parent,level_depth,active%5D`
     const response = await fetch(url, {
       headers: {
         'Accept': 'application/json',
+        'Authorization': `Basic ${Buffer.from(`${apiKey}:`).toString('base64')}`,
       },
     })
 
     if (!response.ok) {
-      throw new Error(`BinShop API error: ${response.status}`)
+      throw new Error(`PrestaShop API error: ${response.status}`)
     }
 
     const data = await response.json()
 
-    if (!data.success || !data.psdata?.menuItems) {
-      throw new Error('Invalid response from BinShop API')
+    if (!data.categories) {
+      throw new Error('Invalid response from PrestaShop API')
     }
 
-    const menuItems: BinShopCategory[] = data.psdata.menuItems
+    const categories: PrestaShopCategory[] = data.categories
 
     // Transform to tree structure
-    const tree = transformToTree(menuItems)
+    const tree = buildTree(categories)
 
     // Flatten for simple select
-    const flatList = flattenCategories(menuItems)
-      .sort((a, b) => a.name.localeCompare(b.name))
+    const flatList = flattenTree(categories)
 
     return Response.json({ tree, flatList })
   } catch (error) {
-    console.error('BinShop categories fetch error:', error)
+    console.error('PrestaShop categories fetch error:', error)
     return Response.json(
-      { error: 'Failed to fetch categories from BinShop' },
+      { error: 'Failed to fetch categories from PrestaShop' },
       { status: 500 }
     )
   }
