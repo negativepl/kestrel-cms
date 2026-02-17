@@ -52,10 +52,9 @@ export const FeaturedCategories: CollectionConfig = {
     {
       name: 'categorySlug',
       type: 'text',
-      label: 'Category Slug',
-      required: true,
+      label: 'Category Slug (fallback)',
       admin: {
-        description: 'URL slug of the category (e.g., "etui-do-iphone-16")',
+        description: 'Optional fallback slug. The storefront resolves localized slugs automatically from PrestaShop by categoryId.',
       },
     },
     {
