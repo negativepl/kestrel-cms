@@ -72,14 +72,10 @@ export const getPrestashopCategories: PayloadHandler = async (req) => {
       },
     })
 
-    if (!response.ok) {
-      throw new Error(`PrestaShop API error: ${response.status}`)
-    }
-
     const data = await response.json()
 
     if (!data.categories) {
-      throw new Error('Invalid response from PrestaShop API')
+      throw new Error(`PrestaShop API error: status ${response.status}, no categories in response`)
     }
 
     const categories: PrestaShopCategory[] = data.categories
