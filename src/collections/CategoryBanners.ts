@@ -3,12 +3,12 @@ import type { CollectionConfig } from 'payload'
 export const CategoryBanners: CollectionConfig = {
   slug: 'category-banners',
   labels: {
-    singular: 'Category Banner',
-    plural: 'Category Banners',
+    singular: 'Banner',
+    plural: 'Banners',
   },
   admin: {
     useAsTitle: 'internalName',
-    defaultColumns: ['internalName', 'categoryId', 'isActive', 'updatedAt'],
+    defaultColumns: ['internalName', 'targetType', 'position', 'isActive', 'updatedAt'],
   },
   access: {
     read: () => true,
@@ -24,12 +24,27 @@ export const CategoryBanners: CollectionConfig = {
       },
     },
     {
+      name: 'targetType',
+      type: 'select',
+      label: 'Target Type',
+      defaultValue: 'category',
+      required: true,
+      options: [
+        { label: 'Category Page', value: 'category' },
+        { label: 'Special Page', value: 'page' },
+      ],
+      admin: {
+        description: 'Where should this banner be displayed?',
+      },
+    },
+    {
       name: 'showOnAllCategories',
       type: 'checkbox',
       label: 'Show on all categories',
       defaultValue: false,
       admin: {
         description: 'If enabled, this banner will appear on ALL category pages',
+        condition: (data) => data?.targetType === 'category',
       },
     },
     {
@@ -38,10 +53,38 @@ export const CategoryBanners: CollectionConfig = {
       label: 'PrestaShop Category',
       admin: {
         description: 'Banner will be displayed on this specific category page',
-        condition: (data) => !data?.showOnAllCategories,
+        condition: (data) => data?.targetType === 'category' && !data?.showOnAllCategories,
         components: {
           Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
         },
+      },
+    },
+    {
+      name: 'pageSlug',
+      type: 'select',
+      label: 'Page',
+      options: [
+        { label: 'Bestsellers', value: 'bestsellers' },
+        { label: 'New Products', value: 'new-products' },
+        { label: 'Sale', value: 'sale' },
+        { label: 'Fast Shipping', value: 'fastshipping' },
+      ],
+      admin: {
+        description: 'Select which special page this banner should appear on',
+        condition: (data) => data?.targetType === 'page',
+      },
+    },
+    {
+      name: 'position',
+      type: 'select',
+      label: 'Position',
+      defaultValue: 'sidebar',
+      options: [
+        { label: 'Sidebar (square)', value: 'sidebar' },
+        { label: 'Above Products (wide)', value: 'above-products' },
+      ],
+      admin: {
+        description: 'Sidebar = square image next to filters. Above Products = wide banner above product grid.',
       },
     },
     {
@@ -51,7 +94,7 @@ export const CategoryBanners: CollectionConfig = {
       label: 'Banner Image',
       required: true,
       admin: {
-        description: 'Recommended: Square image (1:1 aspect ratio), e.g., 400×400px or 600×600px',
+        description: 'Sidebar: square (400×400px). Above Products: wide (1200×300px, 4:1 ratio).',
       },
     },
     {
