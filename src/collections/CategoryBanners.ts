@@ -82,9 +82,21 @@ export const CategoryBanners: CollectionConfig = {
       options: [
         { label: 'Sidebar (square)', value: 'sidebar' },
         { label: 'Above Products (wide)', value: 'above-products' },
+        { label: 'Between Products (wide)', value: 'between-products' },
       ],
       admin: {
-        description: 'Sidebar = square image next to filters. Above Products = wide banner above product grid.',
+        description: 'Sidebar = square (400×400px). Above Products / Between Products = wide (1200×300px, 4:1 ratio).',
+      },
+    },
+    {
+      name: 'inlineAfterPosition',
+      type: 'number',
+      label: 'Show after product #',
+      defaultValue: 8,
+      min: 1,
+      admin: {
+        description: 'Banner appears after this many products (e.g. 8 = after 8th product)',
+        condition: (data) => data?.position === 'between-products',
       },
     },
     {
@@ -94,7 +106,7 @@ export const CategoryBanners: CollectionConfig = {
       label: 'Banner Image',
       required: true,
       admin: {
-        description: 'Sidebar: square (400×400px). Above Products: wide (1200×300px, 4:1 ratio).',
+        description: 'Sidebar: square (400×400px). Above Products / Between Products: wide (1200×300px, 4:1 ratio).',
       },
     },
     {
