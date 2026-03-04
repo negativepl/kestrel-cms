@@ -253,59 +253,6 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
-          label: 'Homepage',
-          fields: [
-            {
-              name: 'latestCategories',
-              type: 'group',
-              label: 'Latest Categories Section',
-              fields: [
-                {
-                  name: 'enabled',
-                  type: 'checkbox',
-                  label: 'Show Latest Categories',
-                  defaultValue: true,
-                },
-                {
-                  name: 'displayStores',
-                  type: 'select',
-                  label: 'Display for Stores',
-                  hasMany: true,
-                  options: [
-                    { label: 'B2C (Retail)', value: 'b2c' },
-                    { label: 'B2B (Wholesale)', value: 'b2b' },
-                  ],
-                  defaultValue: ['b2b'],
-                  admin: {
-                    description: 'Select stores where this section should be displayed. Empty = show everywhere.',
-                  },
-                },
-                {
-                  name: 'limit',
-                  type: 'number',
-                  label: 'Number of categories to show',
-                  defaultValue: 20,
-                  min: 1,
-                  max: 50,
-                },
-                {
-                  name: 'title',
-                  type: 'text',
-                  label: 'Section Title (optional override)',
-                  admin: {
-                    description: 'Leave empty to use default translation',
-                  },
-                },
-                {
-                  name: 'subtitle',
-                  type: 'text',
-                  label: 'Section Subtitle (optional override)',
-                },
-              ],
-            },
-          ],
-        },
-        {
           label: 'SEO',
           fields: [
             {
