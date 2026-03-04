@@ -3,6 +3,13 @@ import type { GlobalConfig } from 'payload'
 export const SiteSettings: GlobalConfig = {
   slug: 'site-settings',
   label: 'Site Settings',
+  admin: {
+    components: {
+      elements: {
+        SaveButton: '@/components/SaveWithTranslate#SaveWithTranslate',
+      },
+    },
+  },
   access: {
     read: () => true,
   },
