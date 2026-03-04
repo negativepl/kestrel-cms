@@ -10,6 +10,7 @@ export const MenuItems: CollectionConfig = {
     useAsTitle: 'label',
     defaultColumns: ['label', 'order', 'prestashopCategoryId', 'isVisible', 'updatedAt'],
     description: 'Main menu items (e.g., Apple, Samsung) with their mega menu category structure',
+    group: 'Navigation',
   },
   access: {
     read: () => true,
