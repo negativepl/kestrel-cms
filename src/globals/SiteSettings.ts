@@ -122,20 +122,24 @@ export const SiteSettings: GlobalConfig = {
           label: 'Header',
           fields: [
             {
-              name: 'announcementBar',
-              type: 'group',
-              label: 'Announcement Bar',
+              name: 'announcements',
+              type: 'array',
+              label: 'Announcement Bars',
+              admin: {
+                description: 'Add multiple announcement bars for different stores/languages. First active match is displayed.',
+              },
               fields: [
                 {
                   name: 'enabled',
                   type: 'checkbox',
                   label: 'Enabled',
-                  defaultValue: false,
+                  defaultValue: true,
                 },
                 {
                   name: 'text',
                   type: 'text',
                   label: 'Text',
+                  required: true,
                   localized: true,
                 },
                 {
@@ -170,18 +174,6 @@ export const SiteSettings: GlobalConfig = {
                   },
                 },
               ],
-            },
-            {
-              name: 'freeShippingThreshold',
-              type: 'number',
-              label: 'Free Shipping Threshold (PLN)',
-              defaultValue: 200,
-            },
-            {
-              name: 'freeShippingText',
-              type: 'text',
-              label: 'Free Shipping Text',
-              defaultValue: 'Free shipping from {amount} PLN',
             },
           ],
         },
