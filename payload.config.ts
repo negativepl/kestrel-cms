@@ -12,7 +12,6 @@ import { Users } from './src/collections/Users'
 import { Media } from './src/collections/Media'
 import { HeroSlides } from './src/collections/HeroSlides'
 import { ProductCarousels } from './src/collections/ProductCarousels'
-import { Navigation } from './src/collections/Navigation'
 import { MenuItems } from './src/collections/MenuItems'
 import { FeaturedCategories } from './src/collections/FeaturedCategories'
 import { CategoryBanners } from './src/collections/CategoryBanners'
@@ -60,7 +59,6 @@ export default buildConfig({
     HeroSlides,
     ProductCarousels,
     MenuItems,
-    Navigation,
     FeaturedCategories,
     CategoryBanners,
     MegaMenuFeatured,
@@ -75,8 +73,7 @@ export default buildConfig({
         'hero-slides': { enabled: true },
         'product-carousels': { enabled: true },
         'menu-items': { enabled: true },
-        'navigation': { enabled: true },
-        'featured-categories': { enabled: true },
+'featured-categories': { enabled: true },
         'category-banners': { enabled: true },
         'mega-menu-featured': { enabled: true },
         'announcement-bars': { enabled: true },

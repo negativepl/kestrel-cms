@@ -8,9 +8,8 @@ export const MenuItems: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'label',
-    defaultColumns: ['label', 'prestashopCategoryId', 'isVisible', 'updatedAt'],
-    description: 'Individual menu items (e.g., Apple, Samsung) with their category structure',
-    group: 'Navigation',
+    defaultColumns: ['label', 'order', 'prestashopCategoryId', 'isVisible', 'updatedAt'],
+    description: 'Main menu items (e.g., Apple, Samsung) with their mega menu category structure',
   },
   access: {
     read: () => true,
@@ -43,6 +42,15 @@ export const MenuItems: CollectionConfig = {
       type: 'checkbox',
       label: 'Visible',
       defaultValue: true,
+    },
+    {
+      name: 'order',
+      type: 'number',
+      label: 'Order',
+      defaultValue: 0,
+      admin: {
+        description: 'Lower number = displays first in menu',
+      },
     },
     // Categories shown in mega menu (directly, no columns wrapper)
     {
