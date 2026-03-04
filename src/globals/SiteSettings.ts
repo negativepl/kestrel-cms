@@ -253,37 +253,6 @@ export const SiteSettings: GlobalConfig = {
           ],
         },
         {
-          label: 'Footer',
-          fields: [
-            {
-              name: 'socialLinks',
-              type: 'array',
-              label: 'Social Media Links',
-              fields: [
-                {
-                  name: 'platform',
-                  type: 'select',
-                  options: [
-                    { label: 'Facebook', value: 'facebook' },
-                    { label: 'Instagram', value: 'instagram' },
-                    { label: 'TikTok', value: 'tiktok' },
-                    { label: 'YouTube', value: 'youtube' },
-                    { label: 'Twitter/X', value: 'twitter' },
-                    { label: 'Pinterest', value: 'pinterest' },
-                  ],
-                  required: true,
-                },
-                {
-                  name: 'url',
-                  type: 'text',
-                  label: 'URL',
-                  required: true,
-                },
-              ],
-            },
-          ],
-        },
-        {
           label: 'Homepage',
           fields: [
             {
