@@ -1,6 +1,7 @@
 import { buildConfig } from 'payload'
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { lexicalEditor } from '@payloadcms/richtext-lexical'
+import { mcpPlugin } from '@payloadcms/plugin-mcp'
 import { en } from '@payloadcms/translations/languages/en'
 import path from 'path'
 import { fileURLToPath } from 'url'
@@ -67,6 +68,20 @@ export default buildConfig({
   ],
   globals: [
     SiteSettings,
+  ],
+  plugins: [
+    mcpPlugin({
+      collections: {
+        'hero-slides': { enabled: true },
+        'product-carousels': { enabled: true },
+        'menu-items': { enabled: true },
+        'navigation': { enabled: true },
+        'featured-categories': { enabled: true },
+        'category-banners': { enabled: true },
+        'mega-menu-featured': { enabled: true },
+        'media': { enabled: { find: true, create: false, update: false, delete: false } },
+      },
+    }),
   ],
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET || 'default-secret-change-me',
