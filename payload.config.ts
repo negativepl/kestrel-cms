@@ -51,9 +51,7 @@ export default buildConfig({
     meta: {
       titleSuffix: ' | Kestrel CMS',
     },
-    components: {
-      beforeNavLinks: ['@/components/ClearCacheButton'],
-    },
+    components: {},
   },
   collections: [
     Users,

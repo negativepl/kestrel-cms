@@ -38,7 +38,7 @@ export const MegaMenuFeatured: CollectionConfig = {
       label: 'Card Image',
       required: true,
       admin: {
-        description: 'Background image for the card (recommended: 600x400 or similar landscape)',
+        description: 'Aspect ratio 3:2 (e.g. 900×600px). Image scales responsively without cropping or stretching. 1 card = full width, 2 cards = stacked vertically.',
       },
     },
     {
