@@ -136,6 +136,7 @@ export const SiteSettings: GlobalConfig = {
                   name: 'text',
                   type: 'text',
                   label: 'Text',
+                  localized: true,
                 },
                 {
                   name: 'link',
@@ -153,6 +154,20 @@ export const SiteSettings: GlobalConfig = {
                   type: 'text',
                   label: 'Text Color',
                   defaultValue: '#ffffff',
+                },
+                {
+                  name: 'displayStores',
+                  type: 'select',
+                  label: 'Display for Stores',
+                  hasMany: true,
+                  options: [
+                    { label: 'B2C (Retail)', value: 'b2c' },
+                    { label: 'B2B (Wholesale)', value: 'b2b' },
+                  ],
+                  defaultValue: ['b2c', 'b2b'],
+                  admin: {
+                    description: 'Select which stores should display this announcement.',
+                  },
                 },
               ],
             },
@@ -176,7 +191,20 @@ export const SiteSettings: GlobalConfig = {
             {
               name: 'footerText',
               type: 'textarea',
-              label: 'Footer Text',
+              label: 'Footer Text (B2C)',
+              localized: true,
+              admin: {
+                description: 'Store description shown in the footer for B2C. Leave empty to use default translation.',
+              },
+            },
+            {
+              name: 'footerTextB2B',
+              type: 'textarea',
+              label: 'Footer Text (B2B)',
+              localized: true,
+              admin: {
+                description: 'Store description shown in the footer for B2B wholesale store. Falls back to B2C text if empty.',
+              },
             },
             {
               name: 'socialLinks',
