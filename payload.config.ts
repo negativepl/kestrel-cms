@@ -77,7 +77,7 @@ export default buildConfig({
         'featured-categories': { enabled: true },
         'category-banners': { enabled: true },
         'mega-menu-featured': { enabled: true },
-        'media': { enabled: { find: true, create: false, update: false, delete: false } },
+        'media': { enabled: { find: true, create: true, update: false, delete: false } },
       },
     }),
   ],
