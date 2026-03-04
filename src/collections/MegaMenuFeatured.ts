@@ -85,6 +85,14 @@ export const MegaMenuFeatured: CollectionConfig = {
       },
     },
     {
+      name: 'showForCategoryIds',
+      type: 'json',
+      label: 'Show for Nav Categories (IDs)',
+      admin: {
+        description: 'Array of parent category IDs from the mega menu where this item should appear. Example: [1550, 424]. Leave empty to show for ALL categories (global).',
+      },
+    },
+    {
       name: 'order',
       type: 'number',
       label: 'Order',
