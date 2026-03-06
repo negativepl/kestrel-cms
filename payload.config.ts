@@ -78,7 +78,7 @@ export default buildConfig({
         'mega-menu-featured': { enabled: true },
         'announcement-bars': { enabled: true },
         'media': { enabled: { find: true, create: true, update: false, delete: false } },
-      } as any,
+      },
     }),
   ],
   editor: lexicalEditor(),
