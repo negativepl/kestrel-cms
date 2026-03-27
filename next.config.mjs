@@ -16,6 +16,14 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'presta.trkhspl.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'cms.homescreen.pl',
+      },
+      {
+        protocol: 'https',
+        hostname: 'homescreen.pl',
+      },
     ],
   },
   async headers() {
