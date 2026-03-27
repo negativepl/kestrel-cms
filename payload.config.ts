@@ -30,6 +30,7 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  serverURL: process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3001',
   i18n: {
     fallbackLanguage: 'en',
     supportedLanguages: { en },
@@ -98,12 +99,16 @@ export default buildConfig({
     'http://localhost:3001',
     'https://presta.trkhspl.com',
     'https://cms.presta.trkhspl.com',
+    'https://homescreen.pl',
+    'https://cms.homescreen.pl',
   ],
   csrf: [
     'http://localhost:3000',
     'http://localhost:3001',
     'https://presta.trkhspl.com',
     'https://cms.presta.trkhspl.com',
+    'https://homescreen.pl',
+    'https://cms.homescreen.pl',
   ],
   endpoints: [
     {
