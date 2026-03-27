@@ -1,3 +1,4 @@
+import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import type { CollectionConfig } from 'payload'
 
 export const CategoryBanners: CollectionConfig = {
@@ -12,6 +13,10 @@ export const CategoryBanners: CollectionConfig = {
   },
   access: {
     read: () => true,
+  },
+  hooks: {
+    afterChange: [revalidateAfterChange],
+    afterDelete: [revalidateAfterDelete],
   },
   fields: [
     {
