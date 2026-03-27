@@ -71,11 +71,29 @@ export const HeroSlides: CollectionConfig = {
       label: 'Button Link',
     },
     {
+      name: 'slideLink',
+      type: 'text',
+      label: 'Slide Link (external URL)',
+      admin: {
+        description: 'Optional: clicking the entire slide opens this URL. Overrides "Link to Category". Use for external pages (e.g. https://inpost.pl).',
+      },
+    },
+    {
+      name: 'slideNoFollow',
+      type: 'checkbox',
+      label: 'Add nofollow to slide link',
+      defaultValue: true,
+      admin: {
+        description: 'Adds rel="nofollow noopener noreferrer" — recommended for external/paid links.',
+        condition: (data) => Boolean(data?.slideLink),
+      },
+    },
+    {
       name: 'categoryId',
       type: 'number',
       label: 'Link to Category',
       admin: {
-        description: 'Optional: Click on slide will go to this category',
+        description: 'Optional: Click on slide will go to this category (used only if Slide Link is empty)',
         components: {
           Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
         },
