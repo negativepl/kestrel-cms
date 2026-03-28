@@ -1,4 +1,5 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
+import { storeVisibilityFields } from './fields/storeVisibility'
 import type { CollectionConfig } from 'payload'
 
 export const CategoryBanners: CollectionConfig = {
@@ -143,37 +144,6 @@ export const CategoryBanners: CollectionConfig = {
       label: 'Active',
       defaultValue: true,
     },
-    {
-      name: 'displayLocales',
-      type: 'select',
-      label: 'Display for languages',
-      hasMany: true,
-      options: [
-        { label: 'Polski', value: 'pl' },
-        { label: 'English', value: 'en' },
-        { label: 'Deutsch', value: 'de' },
-        { label: 'Română', value: 'ro' },
-        { label: 'Čeština', value: 'cs' },
-        { label: 'Magyar', value: 'hu' },
-      ],
-      defaultValue: ['pl', 'en', 'de', 'ro', 'cs', 'hu'],
-      admin: {
-        description: 'Select languages where this banner should be displayed.',
-      },
-    },
-    {
-      name: 'displayStores',
-      type: 'select',
-      label: 'Display for Stores',
-      hasMany: true,
-      options: [
-        { label: 'B2C (Retail)', value: 'b2c' },
-        { label: 'B2B (Wholesale)', value: 'b2b' },
-      ],
-      defaultValue: ['b2c', 'b2b'],
-      admin: {
-        description: 'Select stores where this banner should be displayed.',
-      },
-    },
+    ...storeVisibilityFields,
   ],
 }
