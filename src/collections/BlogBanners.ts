@@ -56,9 +56,9 @@ export const BlogBanners: CollectionConfig = {
       type: 'number',
       label: 'WordPress Post ID (optional)',
       admin: {
-        description:
-          'Show banner only on this blog post. Leave empty = global (all posts). ' +
-          'Find post IDs: <a href="https://blog.trkhspl.com/wp-admin/edit.php" target="_blank" rel="noopener">WordPress → Posts</a> — hover over a post to see its ID in the URL.',
+        components: {
+          Field: '@/components/WordPressPostField#WordPressPostField',
+        },
       },
     },
     {

@@ -1,0 +1,152 @@
+.wp-post-field {
+  margin-bottom: 16px;
+}
+
+.wp-post-field__label {
+  display: block;
+  font-weight: 600;
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.wp-post-field__required {
+  color: #dc3545;
+  margin-left: 2px;
+}
+
+.wp-post-field__description {
+  font-size: 12px;
+  color: #888;
+  margin: 0 0 8px;
+}
+
+.wp-post-field__error {
+  color: #dc3545;
+  font-size: 13px;
+  margin-bottom: 8px;
+}
+
+.wp-post-field__selected {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #f0f7ff;
+  border: 1px solid #b3d7ff;
+  border-radius: 6px;
+  padding: 8px 12px;
+  margin-bottom: 8px;
+  font-size: 13px;
+}
+
+.wp-post-field__selected-title {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  flex: 1;
+}
+
+.wp-post-field__clear {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 16px;
+  color: #999;
+  padding: 0 0 0 8px;
+  line-height: 1;
+}
+
+.wp-post-field__clear:hover {
+  color: #dc3545;
+}
+
+.wp-post-field__empty-hint {
+  font-size: 13px;
+  color: #999;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+
+.wp-post-field__toggle {
+  background: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  padding: 6px 12px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #495057;
+}
+
+.wp-post-field__toggle:hover {
+  background: #e9ecef;
+}
+
+.wp-post-field__dropdown {
+  border: 1px solid #dee2e6;
+  border-radius: 6px;
+  margin-top: 8px;
+  overflow: hidden;
+  background: #fff;
+}
+
+.wp-post-field__search {
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid #eee;
+  font-size: 13px;
+  outline: none;
+  box-sizing: border-box;
+}
+
+.wp-post-field__loading {
+  padding: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
+
+.wp-post-field__list {
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.wp-post-field__item {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 8px 12px;
+  border: none;
+  border-bottom: 1px solid #f5f5f5;
+  background: none;
+  cursor: pointer;
+  text-align: left;
+  font-size: 13px;
+}
+
+.wp-post-field__item:hover {
+  background: #f8f9fa;
+}
+
+.wp-post-field__item--selected {
+  background: #f0f7ff;
+}
+
+.wp-post-field__item-title {
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wp-post-field__item-meta {
+  font-size: 11px;
+  color: #999;
+  margin-top: 2px;
+}
+
+.wp-post-field__empty {
+  padding: 12px;
+  text-align: center;
+  color: #999;
+  font-size: 13px;
+}
