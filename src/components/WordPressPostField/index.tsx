@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState, useCallback } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { useField } from '@payloadcms/ui'
 import '../PrestaShopCategoryField/styles.css'
 
@@ -22,6 +22,14 @@ function decodeHtml(text: string): string {
   return text.replace(/&#8211;/g, '–').replace(/&#8230;/g, '…').replace(/&amp;/g, '&').replace(/&#8217;/g, "'")
 }
 
+function mapPosts(data: any[]): WPPost[] {
+  return data.map((p) => ({
+    id: p.id,
+    title: decodeHtml(p.title.rendered),
+    date: new Date(p.date).toLocaleDateString('pl-PL'),
+  }))
+}
+
 export const WordPressPostField: React.FC<Props> = ({ path, label, required }) => {
   const { value, setValue } = useField<number>({ path })
   const [posts, setPosts] = useState<WPPost[]>([])
@@ -29,6 +37,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null)
+  const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
   // Load recent posts
   useEffect(() => {
@@ -37,12 +46,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
         setLoading(true)
         const res = await fetch(`${WP_API}&per_page=30&orderby=date&order=desc&_fields=id,title,date`)
         if (!res.ok) throw new Error('Failed to fetch')
-        const data = await res.json()
-        setPosts(data.map((p: any) => ({
-          id: p.id,
-          title: decodeHtml(p.title.rendered),
-          date: new Date(p.date).toLocaleDateString('pl-PL'),
-        })))
+        setPosts(mapPosts(await res.json()))
         setError(null)
       } catch {
         setError('Failed to load posts from WordPress')
@@ -70,41 +74,33 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
       .catch(() => setSelectedTitle(`Post #${value}`))
   }, [value, posts])
 
-  // Search
-  const handleSearch = useCallback(async (query: string) => {
+  // Search with debounce
+  const handleSearchChange = (query: string) => {
     setSearch(query)
-    if (query.length < 2) {
-      // Reset to recent posts
-      const res = await fetch(`${WP_API}&per_page=30&orderby=date&order=desc&_fields=id,title,date`)
-      if (res.ok) {
-        const data = await res.json()
-        setPosts(data.map((p: any) => ({
-          id: p.id,
-          title: decodeHtml(p.title.rendered),
-          date: new Date(p.date).toLocaleDateString('pl-PL'),
-        })))
+
+    if (debounceRef.current) clearTimeout(debounceRef.current)
+
+    debounceRef.current = setTimeout(async () => {
+      if (query.length < 2) {
+        // Reset to recent posts
+        try {
+          const res = await fetch(`${WP_API}&per_page=30&orderby=date&order=desc&_fields=id,title,date`)
+          if (res.ok) setPosts(mapPosts(await res.json()))
+        } catch { /* ignore */ }
+        return
       }
-      return
-    }
-    try {
-      setLoading(true)
-      const res = await fetch(`${WP_API}&search=${encodeURIComponent(query)}&per_page=15&_fields=id,title,date`)
-      if (!res.ok) return
-      const data = await res.json()
-      setPosts(data.map((p: any) => ({
-        id: p.id,
-        title: decodeHtml(p.title.rendered),
-        date: new Date(p.date).toLocaleDateString('pl-PL'),
-      })))
-    } catch {
-      // ignore
-    } finally {
-      setLoading(false)
-    }
-  }, [])
+      try {
+        setLoading(true)
+        const res = await fetch(`${WP_API}&search=${encodeURIComponent(query)}&per_page=15&_fields=id,title,date`)
+        if (res.ok) setPosts(mapPosts(await res.json()))
+      } catch { /* ignore */ } finally {
+        setLoading(false)
+      }
+    }, 400)
+  }
 
   return (
-    <div className="ps-category-field">
+    <div className="ps-category-field" style={{ marginBottom: 'calc(var(--base) * 2)' }}>
       <label className="ps-category-field__label">
         {label || 'Blog Post (optional)'}
         {required && <span className="ps-category-field__required">*</span>}
@@ -130,40 +126,43 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
         </div>
       )}
 
-      {loading && <div className="ps-category-field__loading">Loading posts...</div>}
       {error && <div className="ps-category-field__error">{error}</div>}
 
-      {!loading && !error && (
+      {!error && (
         <>
           <input
             type="text"
             className="ps-category-field__search"
             placeholder="Search posts by title..."
             value={search}
-            onChange={(e) => handleSearch(e.target.value)}
+            onChange={(e) => handleSearchChange(e.target.value)}
           />
 
-          <div className="ps-category-tree">
-            {posts.map((post) => (
-              <div key={post.id} className="ps-category-tree__node">
-                <div
-                  className={`ps-category-tree__item ${value === post.id ? 'ps-category-tree__item--selected' : ''}`}
-                >
-                  <button
-                    type="button"
-                    className="ps-category-tree__label"
-                    onClick={() => setValue(post.id)}
+          {loading && <div className="ps-category-field__loading">Loading posts...</div>}
+
+          {!loading && (
+            <div className="ps-category-tree">
+              {posts.map((post) => (
+                <div key={post.id} className="ps-category-tree__node">
+                  <div
+                    className={`ps-category-tree__item ${value === post.id ? 'ps-category-tree__item--selected' : ''}`}
                   >
-                    {post.title}
-                    <span className="ps-category-tree__id">#{post.id} · {post.date}</span>
-                  </button>
+                    <button
+                      type="button"
+                      className="ps-category-tree__label"
+                      onClick={() => setValue(post.id)}
+                    >
+                      {post.title}
+                      <span className="ps-category-tree__id">#{post.id} · {post.date}</span>
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-            {posts.length === 0 && (
-              <div className="ps-category-field__loading">No posts found</div>
-            )}
-          </div>
+              ))}
+              {posts.length === 0 && (
+                <div className="ps-category-field__loading">No posts found</div>
+              )}
+            </div>
+          )}
         </>
       )}
     </div>
