@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState, useCallback } from 'react'
 import { useField } from '@payloadcms/ui'
-import './styles.css'
+import '../PrestaShopCategoryField/styles.css'
 
 const WP_API = 'https://blog.trkhspl.com/wp-json/wp/v2/posts'
 
@@ -10,7 +10,6 @@ type WPPost = {
   id: number
   title: string
   date: string
-  link: string
 }
 
 type Props = {
@@ -19,39 +18,42 @@ type Props = {
   required?: boolean
 }
 
+function decodeHtml(text: string): string {
+  return text.replace(/&#8211;/g, '–').replace(/&#8230;/g, '…').replace(/&amp;/g, '&').replace(/&#8217;/g, "'")
+}
+
 export const WordPressPostField: React.FC<Props> = ({ path, label, required }) => {
   const { value, setValue } = useField<number>({ path })
   const [posts, setPosts] = useState<WPPost[]>([])
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [search, setSearch] = useState('')
   const [selectedTitle, setSelectedTitle] = useState<string | null>(null)
-  const [isOpen, setIsOpen] = useState(false)
 
-  // Load initial posts + selected post title
+  // Load recent posts
   useEffect(() => {
-    const fetchInitial = async () => {
+    const fetchPosts = async () => {
       try {
         setLoading(true)
-        const res = await fetch(`${WP_API}?per_page=20&orderby=date&order=desc&_fields=id,title,date,link`)
+        const res = await fetch(`${WP_API}?per_page=30&orderby=date&order=desc&_fields=id,title,date`)
         if (!res.ok) throw new Error('Failed to fetch')
         const data = await res.json()
         setPosts(data.map((p: any) => ({
           id: p.id,
-          title: p.title.rendered.replace(/&#8211;/g, '–').replace(/&#8230;/g, '…').replace(/&amp;/g, '&'),
+          title: decodeHtml(p.title.rendered),
           date: new Date(p.date).toLocaleDateString('pl-PL'),
-          link: p.link,
         })))
+        setError(null)
       } catch {
         setError('Nie udało się pobrać postów z WordPress')
       } finally {
         setLoading(false)
       }
     }
-    fetchInitial()
+    fetchPosts()
   }, [])
 
-  // Fetch selected post title if value set but not in loaded posts
+  // Resolve selected post title
   useEffect(() => {
     if (!value) {
       setSelectedTitle(null)
@@ -62,116 +64,107 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
       setSelectedTitle(found.title)
       return
     }
-    // Fetch single post
     fetch(`${WP_API}/${value}?_fields=id,title`)
       .then((r) => r.json())
-      .then((p) => {
-        if (p?.title?.rendered) {
-          setSelectedTitle(p.title.rendered.replace(/&#8211;/g, '–').replace(/&#8230;/g, '…').replace(/&amp;/g, '&'))
-        }
-      })
+      .then((p) => setSelectedTitle(p?.title?.rendered ? decodeHtml(p.title.rendered) : `Post #${value}`))
       .catch(() => setSelectedTitle(`Post #${value}`))
   }, [value, posts])
 
-  // Search posts
+  // Search
   const handleSearch = useCallback(async (query: string) => {
     setSearch(query)
-    if (query.length < 2) return
+    if (query.length < 2) {
+      // Reset to recent posts
+      const res = await fetch(`${WP_API}?per_page=30&orderby=date&order=desc&_fields=id,title,date`)
+      if (res.ok) {
+        const data = await res.json()
+        setPosts(data.map((p: any) => ({
+          id: p.id,
+          title: decodeHtml(p.title.rendered),
+          date: new Date(p.date).toLocaleDateString('pl-PL'),
+        })))
+      }
+      return
+    }
     try {
       setLoading(true)
-      const res = await fetch(`${WP_API}?search=${encodeURIComponent(query)}&per_page=10&_fields=id,title,date,link`)
+      const res = await fetch(`${WP_API}?search=${encodeURIComponent(query)}&per_page=15&_fields=id,title,date`)
       if (!res.ok) return
       const data = await res.json()
       setPosts(data.map((p: any) => ({
         id: p.id,
-        title: p.title.rendered.replace(/&#8211;/g, '–').replace(/&#8230;/g, '…').replace(/&amp;/g, '&'),
+        title: decodeHtml(p.title.rendered),
         date: new Date(p.date).toLocaleDateString('pl-PL'),
-        link: p.link,
       })))
     } catch {
-      // ignore search errors
+      // ignore
     } finally {
       setLoading(false)
     }
   }, [])
 
-  const selectPost = (post: WPPost) => {
-    setValue(post.id)
-    setSelectedTitle(post.title)
-    setIsOpen(false)
-    setSearch('')
-  }
-
-  const clearSelection = () => {
-    setValue(null as any)
-    setSelectedTitle(null)
-  }
-
   return (
-    <div className="wp-post-field">
-      <label className="wp-post-field__label">
-        {label || 'WordPress Post ID'}
-        {required && <span className="wp-post-field__required">*</span>}
+    <div className="ps-category-field">
+      <label className="ps-category-field__label">
+        {label || 'Post na blogu (opcjonalnie)'}
+        {required && <span className="ps-category-field__required">*</span>}
       </label>
 
-      <p className="wp-post-field__description">
-        Pokaż banner tylko na tym poście. Puste = globalny (wszystkie posty).
-      </p>
-
-      {error && <div className="wp-post-field__error">{error}</div>}
-
-      {/* Selected post display */}
-      {value && selectedTitle ? (
-        <div className="wp-post-field__selected">
-          <span className="wp-post-field__selected-title">
-            <strong>#{value}</strong> — {selectedTitle}
-          </span>
-          <button type="button" className="wp-post-field__clear" onClick={clearSelection}>✕</button>
+      {value && selectedTitle && (
+        <div className="ps-category-field__selected">
+          Wybrany: <strong>{selectedTitle}</strong> (ID: {value})
+          {' '}
+          <button
+            type="button"
+            onClick={() => setValue(null as any)}
+            style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', textDecoration: 'underline', fontSize: 'inherit', fontFamily: 'inherit' }}
+          >
+            Usuń (banner globalny)
+          </button>
         </div>
-      ) : (
-        <div className="wp-post-field__empty-hint">Brak — banner globalny (wszystkie posty)</div>
       )}
 
-      {/* Toggle dropdown */}
-      <button
-        type="button"
-        className="wp-post-field__toggle"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        {isOpen ? 'Zamknij' : 'Wybierz post z bloga'}
-      </button>
+      {!value && (
+        <div style={{ fontSize: 'calc(var(--font-body-size) * 0.9)', color: 'var(--theme-elevation-500)', marginBottom: 'calc(var(--base) / 2)' }}>
+          Brak — banner wyświetla się na wszystkich postach
+        </div>
+      )}
 
-      {/* Dropdown */}
-      {isOpen && (
-        <div className="wp-post-field__dropdown">
+      {loading && <div className="ps-category-field__loading">Ładowanie postów...</div>}
+      {error && <div className="ps-category-field__error">{error}</div>}
+
+      {!loading && !error && (
+        <>
           <input
             type="text"
-            className="wp-post-field__search"
-            placeholder="Szukaj po tytule..."
+            className="ps-category-field__search"
+            placeholder="Szukaj posta po tytule..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
-            autoFocus
           />
 
-          {loading && <div className="wp-post-field__loading">Ładowanie...</div>}
-
-          <div className="wp-post-field__list">
+          <div className="ps-category-tree">
             {posts.map((post) => (
-              <button
-                key={post.id}
-                type="button"
-                className={`wp-post-field__item ${value === post.id ? 'wp-post-field__item--selected' : ''}`}
-                onClick={() => selectPost(post)}
-              >
-                <span className="wp-post-field__item-title">{post.title}</span>
-                <span className="wp-post-field__item-meta">#{post.id} · {post.date}</span>
-              </button>
+              <div key={post.id} className="ps-category-tree__node">
+                <div
+                  className={`ps-category-tree__item ${value === post.id ? 'ps-category-tree__item--selected' : ''}`}
+                >
+                  <button
+                    type="button"
+                    className="ps-category-tree__label"
+                    onClick={() => setValue(post.id)}
+                  >
+                    {post.title}
+                    <span className="ps-category-tree__id">#{post.id} · {post.date}</span>
+                  </button>
+                </div>
+              </div>
             ))}
-            {!loading && posts.length === 0 && (
-              <div className="wp-post-field__empty">Nie znaleziono postów</div>
+            {posts.length === 0 && (
+              <div className="ps-category-field__loading">Nie znaleziono postów</div>
             )}
           </div>
-        </div>
+        </>
       )}
     </div>
   )
