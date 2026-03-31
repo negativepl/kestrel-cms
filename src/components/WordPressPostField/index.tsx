@@ -4,7 +4,7 @@ import React, { useEffect, useState, useCallback } from 'react'
 import { useField } from '@payloadcms/ui'
 import '../PrestaShopCategoryField/styles.css'
 
-const WP_API = 'https://blog.trkhspl.com/wp-json/wp/v2/posts'
+const WP_API = 'https://blog.trkhspl.com/wp-json/wp/v2/posts?lang=pl'
 
 type WPPost = {
   id: number
@@ -35,7 +35,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
     const fetchPosts = async () => {
       try {
         setLoading(true)
-        const res = await fetch(`${WP_API}?per_page=30&orderby=date&order=desc&_fields=id,title,date`)
+        const res = await fetch(`${WP_API}&per_page=30&orderby=date&order=desc&_fields=id,title,date`)
         if (!res.ok) throw new Error('Failed to fetch')
         const data = await res.json()
         setPosts(data.map((p: any) => ({
@@ -45,7 +45,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
         })))
         setError(null)
       } catch {
-        setError('Nie udało się pobrać postów z WordPress')
+        setError('Failed to load posts from WordPress')
       } finally {
         setLoading(false)
       }
@@ -64,7 +64,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
       setSelectedTitle(found.title)
       return
     }
-    fetch(`${WP_API}/${value}?_fields=id,title`)
+    fetch(`https://blog.trkhspl.com/wp-json/wp/v2/posts/${value}?_fields=id,title`)
       .then((r) => r.json())
       .then((p) => setSelectedTitle(p?.title?.rendered ? decodeHtml(p.title.rendered) : `Post #${value}`))
       .catch(() => setSelectedTitle(`Post #${value}`))
@@ -75,7 +75,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
     setSearch(query)
     if (query.length < 2) {
       // Reset to recent posts
-      const res = await fetch(`${WP_API}?per_page=30&orderby=date&order=desc&_fields=id,title,date`)
+      const res = await fetch(`${WP_API}&per_page=30&orderby=date&order=desc&_fields=id,title,date`)
       if (res.ok) {
         const data = await res.json()
         setPosts(data.map((p: any) => ({
@@ -88,7 +88,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
     }
     try {
       setLoading(true)
-      const res = await fetch(`${WP_API}?search=${encodeURIComponent(query)}&per_page=15&_fields=id,title,date`)
+      const res = await fetch(`${WP_API}&search=${encodeURIComponent(query)}&per_page=15&_fields=id,title,date`)
       if (!res.ok) return
       const data = await res.json()
       setPosts(data.map((p: any) => ({
@@ -106,31 +106,31 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
   return (
     <div className="ps-category-field">
       <label className="ps-category-field__label">
-        {label || 'Post na blogu (opcjonalnie)'}
+        {label || 'Blog Post (optional)'}
         {required && <span className="ps-category-field__required">*</span>}
       </label>
 
       {value && selectedTitle && (
         <div className="ps-category-field__selected">
-          Wybrany: <strong>{selectedTitle}</strong> (ID: {value})
+          Selected: <strong>{selectedTitle}</strong> (ID: {value})
           {' '}
           <button
             type="button"
             onClick={() => setValue(null as any)}
             style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'inherit', textDecoration: 'underline', fontSize: 'inherit', fontFamily: 'inherit' }}
           >
-            Usuń (banner globalny)
+            Clear (show on all posts)
           </button>
         </div>
       )}
 
       {!value && (
         <div style={{ fontSize: 'calc(var(--font-body-size) * 0.9)', color: 'var(--theme-elevation-500)', marginBottom: 'calc(var(--base) / 2)' }}>
-          Brak — banner wyświetla się na wszystkich postach
+          None — banner shows on all posts
         </div>
       )}
 
-      {loading && <div className="ps-category-field__loading">Ładowanie postów...</div>}
+      {loading && <div className="ps-category-field__loading">Loading posts...</div>}
       {error && <div className="ps-category-field__error">{error}</div>}
 
       {!loading && !error && (
@@ -138,7 +138,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
           <input
             type="text"
             className="ps-category-field__search"
-            placeholder="Szukaj posta po tytule..."
+            placeholder="Search posts by title..."
             value={search}
             onChange={(e) => handleSearch(e.target.value)}
           />
@@ -161,7 +161,7 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
               </div>
             ))}
             {posts.length === 0 && (
-              <div className="ps-category-field__loading">Nie znaleziono postów</div>
+              <div className="ps-category-field__loading">No posts found</div>
             )}
           </div>
         </>
