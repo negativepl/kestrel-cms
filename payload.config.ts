@@ -17,6 +17,7 @@ import { FeaturedCategories } from './src/collections/FeaturedCategories'
 import { CategoryBanners } from './src/collections/CategoryBanners'
 import { MegaMenuFeatured } from './src/collections/MegaMenuFeatured'
 import { AnnouncementBars } from './src/collections/AnnouncementBars'
+import { BlogBanners } from './src/collections/BlogBanners'
 
 // Globals
 import { Branding } from './src/globals/Branding'
@@ -64,6 +65,7 @@ export default buildConfig({
     CategoryBanners,
     MegaMenuFeatured,
     AnnouncementBars,
+    BlogBanners,
   ],
   globals: [
     Branding,
@@ -78,6 +80,7 @@ export default buildConfig({
         'category-banners': { enabled: true },
         'mega-menu-featured': { enabled: true },
         'announcement-bars': { enabled: true },
+        'blog-banners': { enabled: true },
         'media': { enabled: { find: true, create: true, update: false, delete: false } },
       },
     }),
