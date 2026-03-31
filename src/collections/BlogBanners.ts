@@ -10,7 +10,7 @@ export const BlogBanners: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'internalName',
-    defaultColumns: ['internalName', 'insertAfterParagraph', 'isActive', 'updatedAt'],
+    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'updatedAt'],
     description: 'Promotional banners displayed inline within blog posts',
   },
   access: {
@@ -49,6 +49,16 @@ export const BlogBanners: CollectionConfig = {
       min: 1,
       admin: {
         description: 'Banner appears after this paragraph (e.g. 3 = after 3rd paragraph). If post has fewer paragraphs, banner shows at the end.',
+      },
+    },
+    {
+      name: 'wordpressPostId',
+      type: 'number',
+      label: 'WordPress Post ID (optional)',
+      admin: {
+        description:
+          'Show banner only on this blog post. Leave empty = global (all posts). ' +
+          'Find post IDs: <a href="https://blog.trkhspl.com/wp-admin/edit.php" target="_blank" rel="noopener">WordPress → Posts</a> — hover over a post to see its ID in the URL.',
       },
     },
     {
