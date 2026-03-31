@@ -91,8 +91,14 @@ export const WordPressPostField: React.FC<Props> = ({ path, label, required }) =
       }
       try {
         setLoading(true)
-        const res = await fetch(`${WP_API}&search=${encodeURIComponent(query)}&per_page=15&_fields=id,title,date`)
-        if (res.ok) setPosts(mapPosts(await res.json()))
+        // Fetch more results and filter by title client-side (WP search includes body matches)
+        const res = await fetch(`${WP_API}&search=${encodeURIComponent(query)}&per_page=50&_fields=id,title,date`)
+        if (res.ok) {
+          const all = mapPosts(await res.json())
+          const q = query.toLowerCase()
+          const filtered = all.filter((p) => p.title.toLowerCase().includes(q))
+          setPosts(filtered.length > 0 ? filtered : all.slice(0, 10))
+        }
       } catch { /* ignore */ } finally {
         setLoading(false)
       }
