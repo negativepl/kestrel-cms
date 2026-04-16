@@ -24,7 +24,7 @@ export const SaveWithTranslate: React.FC = () => {
 
       console.log('Source document:', doc)
 
-      const fieldsToTranslate = ['title', 'subtitle', 'buttonText']
+      const fieldsToTranslate = ['text', 'title', 'subtitle', 'buttonText']
       const targetLocales = allLocales.filter(l => l !== currentLocale)
 
       for (const field of fieldsToTranslate) {
