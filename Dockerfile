@@ -61,4 +61,4 @@ ENV HOSTNAME="0.0.0.0"
 
 COPY --from=builder --chown=nextjs:nodejs /app/scripts/migrate-startup.js ./migrate-startup.js
 
-CMD ["sh", "-c", "node migrate-startup.js && node server.js"]
+CMD ["sh", "-c", "node migrate-startup.js; node server.js"]
