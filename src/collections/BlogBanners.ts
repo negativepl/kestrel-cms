@@ -1,6 +1,31 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import { storeVisibilityFields } from './fields/storeVisibility'
-import type { CollectionConfig } from 'payload'
+import type { CollectionBeforeOperationHook, CollectionConfig } from 'payload'
+
+const filterByVisibilityDates: CollectionBeforeOperationHook = ({ args, operation, req }) => {
+  if (operation === 'find' && !req.user) {
+    const now = new Date().toISOString()
+    const existingWhere = args.where
+    args.where = {
+      and: [
+        ...(existingWhere ? [existingWhere] : []),
+        {
+          or: [
+            { visibleFrom: { equals: null } },
+            { visibleFrom: { less_than_equal: now } },
+          ],
+        },
+        {
+          or: [
+            { visibleTo: { equals: null } },
+            { visibleTo: { greater_than_equal: now } },
+          ],
+        },
+      ],
+    }
+  }
+  return args
+}
 
 export const BlogBanners: CollectionConfig = {
   slug: 'blog-banners',
@@ -10,13 +35,14 @@ export const BlogBanners: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'internalName',
-    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'updatedAt'],
+    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'visibleTo', 'updatedAt'],
     description: 'Promotional banners displayed inline within blog posts',
   },
   access: {
     read: () => true,
   },
   hooks: {
+    beforeOperation: [filterByVisibilityDates],
     afterChange: [revalidateAfterChange],
     afterDelete: [revalidateAfterDelete],
   },
@@ -91,5 +117,45 @@ export const BlogBanners: CollectionConfig = {
       defaultValue: true,
     },
     ...storeVisibilityFields,
+    {
+      type: 'collapsible',
+      label: 'Visibility Schedule',
+      admin: {
+        initCollapsed: true,
+        description: 'Leave empty to show banner without time restrictions.',
+      },
+      fields: [
+        {
+          name: 'visibleFrom',
+          type: 'date',
+          label: 'Visible From',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+              displayFormat: 'dd.MM.yyyy HH:mm',
+            },
+            description: 'Banner starts showing at this date/time. Leave empty = visible immediately.',
+          },
+        },
+        {
+          name: 'visibleTo',
+          type: 'date',
+          label: 'Visible To',
+          admin: {
+            date: {
+              pickerAppearance: 'dayAndTime',
+              displayFormat: 'dd.MM.yyyy HH:mm',
+            },
+            description: 'Banner stops showing after this date/time. Leave empty = no expiry.',
+          },
+          validate: (value: Date | string | null | undefined, { siblingData }: { siblingData: Record<string, unknown> }) => {
+            if (value && siblingData?.visibleFrom && new Date(value as string) <= new Date(siblingData.visibleFrom as string)) {
+              return 'Visible To must be later than Visible From'
+            }
+            return true
+          },
+        },
+      ],
+    },
   ],
 }
