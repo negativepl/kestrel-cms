@@ -1,6 +1,6 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import { storeVisibilityFields } from './fields/storeVisibility'
-import type { CollectionConfig, Where } from 'payload'
+import type { CollectionConfig } from 'payload'
 
 export const BlogBanners: CollectionConfig = {
   slug: 'blog-banners',
@@ -10,31 +10,11 @@ export const BlogBanners: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'internalName',
-    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'visibleFrom', 'visibleTo', 'updatedAt'],
+    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'updatedAt'],
     description: 'Promotional banners displayed inline within blog posts',
   },
   access: {
-    read: ({ req }) => {
-      if (req.user) return true
-      const now = new Date().toISOString()
-      return {
-        and: [
-          { isActive: { equals: true } },
-          {
-            or: [
-              { visibleFrom: { equals: null } },
-              { visibleFrom: { less_than_equal: now } },
-            ],
-          },
-          {
-            or: [
-              { visibleTo: { equals: null } },
-              { visibleTo: { greater_than_equal: now } },
-            ],
-          },
-        ],
-      } as Where
-    },
+    read: () => true,
   },
   hooks: {
     afterChange: [revalidateAfterChange],
