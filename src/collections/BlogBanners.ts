@@ -3,26 +3,29 @@ import { storeVisibilityFields } from './fields/storeVisibility'
 import type { CollectionBeforeOperationHook, CollectionConfig } from 'payload'
 
 const filterByVisibilityDates: CollectionBeforeOperationHook = ({ args, operation, req }) => {
-  if (operation === 'find' && !req.user) {
+  if (!req.user && (operation === 'find' || operation === 'findByID')) {
     const now = new Date().toISOString()
-    const existingWhere = args.where
-    args.where = {
+    const existingWhere = 'where' in args ? args.where : undefined
+    const whereClause = {
       and: [
         ...(existingWhere ? [existingWhere] : []),
         { isActive: { equals: true } },
         {
           or: [
-            { visibleFrom: { equals: null } },
+            { visibleFrom: { exists: false } },
             { visibleFrom: { less_than_equal: now } },
           ],
         },
         {
           or: [
-            { visibleTo: { equals: null } },
+            { visibleTo: { exists: false } },
             { visibleTo: { greater_than_equal: now } },
           ],
         },
       ],
+    }
+    if ('where' in args) {
+      args.where = whereClause
     }
   }
   return args
@@ -36,7 +39,7 @@ export const BlogBanners: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'internalName',
-    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'visibleTo', 'updatedAt'],
+    defaultColumns: ['internalName', 'wordpressPostId', 'isActive', 'visibleFrom', 'visibleTo', 'updatedAt'],
     description: 'Promotional banners displayed inline within blog posts',
   },
   access: {
