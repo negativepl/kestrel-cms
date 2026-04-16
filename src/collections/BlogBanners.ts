@@ -9,6 +9,7 @@ const filterByVisibilityDates: CollectionBeforeOperationHook = ({ args, operatio
     args.where = {
       and: [
         ...(existingWhere ? [existingWhere] : []),
+        { isActive: { equals: true } },
         {
           or: [
             { visibleFrom: { equals: null } },
