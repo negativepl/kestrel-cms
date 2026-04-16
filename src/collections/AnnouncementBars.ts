@@ -139,6 +139,15 @@ export const AnnouncementBars: CollectionConfig = {
       },
     },
     {
+      name: 'marquee',
+      type: 'checkbox',
+      label: 'Marquee (scrolling ticker)',
+      defaultValue: false,
+      admin: {
+        description: 'When enabled, the text scrolls horizontally across the bar instead of being truncated.',
+      },
+    },
+    {
       name: 'isActive',
       type: 'checkbox',
       label: 'Active',
