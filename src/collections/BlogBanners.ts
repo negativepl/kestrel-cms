@@ -1,35 +1,6 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import { storeVisibilityFields } from './fields/storeVisibility'
-import type { CollectionBeforeOperationHook, CollectionConfig } from 'payload'
-
-const filterByVisibilityDates: CollectionBeforeOperationHook = ({ args, operation, req }) => {
-  if (!req.user && (operation === 'find' || operation === 'findByID')) {
-    const now = new Date().toISOString()
-    const existingWhere = 'where' in args ? args.where : undefined
-    const whereClause = {
-      and: [
-        ...(existingWhere ? [existingWhere] : []),
-        { isActive: { equals: true } },
-        {
-          or: [
-            { visibleFrom: { exists: false } },
-            { visibleFrom: { less_than_equal: now } },
-          ],
-        },
-        {
-          or: [
-            { visibleTo: { exists: false } },
-            { visibleTo: { greater_than_equal: now } },
-          ],
-        },
-      ],
-    }
-    if ('where' in args) {
-      args.where = whereClause
-    }
-  }
-  return args
-}
+import type { CollectionConfig, Where } from 'payload'
 
 export const BlogBanners: CollectionConfig = {
   slug: 'blog-banners',
@@ -43,10 +14,29 @@ export const BlogBanners: CollectionConfig = {
     description: 'Promotional banners displayed inline within blog posts',
   },
   access: {
-    read: () => true,
+    read: ({ req }) => {
+      if (req.user) return true
+      const now = new Date().toISOString()
+      return {
+        and: [
+          { isActive: { equals: true } },
+          {
+            or: [
+              { visibleFrom: { equals: null } },
+              { visibleFrom: { less_than_equal: now } },
+            ],
+          },
+          {
+            or: [
+              { visibleTo: { equals: null } },
+              { visibleTo: { greater_than_equal: now } },
+            ],
+          },
+        ],
+      } as Where
+    },
   },
   hooks: {
-    beforeOperation: [filterByVisibilityDates],
     afterChange: [revalidateAfterChange],
     afterDelete: [revalidateAfterDelete],
   },
