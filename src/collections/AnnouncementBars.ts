@@ -76,6 +76,7 @@ export const AnnouncementBars: CollectionConfig = {
         { label: 'Terms', value: '/terms' },
         { label: 'Privacy', value: '/privacy' },
         { label: "B2B What's New", value: '/b2b/nowosci' },
+        { label: 'Delivery News (B2B)', value: '/delivery-news' },
         { label: 'Public Procurement', value: '/zamowienia-publiczne' },
         { label: 'Integrations', value: '/integrations' },
       ],
