@@ -9,6 +9,7 @@ const languageNames: Record<string, string> = {
   ro: 'Romanian',
   cs: 'Czech',
   hu: 'Hungarian',
+  el: 'Greek',
 }
 
 export const translateHandler: PayloadHandler = async (req) => {

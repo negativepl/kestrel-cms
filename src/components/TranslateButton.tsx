@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { useDocumentInfo, useLocale, useTranslation } from '@payloadcms/ui'
 
-const allLocales = ['pl', 'en', 'de', 'ro', 'cs', 'hu']
+const allLocales = ['pl', 'en', 'de', 'ro', 'cs', 'hu', 'el']
 
 const localeLabels: Record<string, string> = {
   pl: '🇵🇱 Polski',
@@ -12,6 +12,7 @@ const localeLabels: Record<string, string> = {
   ro: '🇷🇴 Română',
   cs: '🇨🇿 Čeština',
   hu: '🇭🇺 Magyar',
+  el: '🇬🇷 Ελληνικά',
 }
 
 export const TranslateButton: React.FC = () => {

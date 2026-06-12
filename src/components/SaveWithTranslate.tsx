@@ -3,7 +3,7 @@
 import { useState } from 'react'
 import { Button, SaveButton, useDocumentInfo, useLocale, toast } from '@payloadcms/ui'
 
-const allLocales = ['pl', 'en', 'de', 'ro', 'cs', 'hu']
+const allLocales = ['pl', 'en', 'de', 'ro', 'cs', 'hu', 'el']
 
 export const SaveWithTranslate: React.FC = () => {
   const [isTranslating, setIsTranslating] = useState(false)

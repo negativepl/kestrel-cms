@@ -44,6 +44,7 @@ export default buildConfig({
       { label: 'Română', code: 'ro' },
       { label: 'Čeština', code: 'cs' },
       { label: 'Magyar', code: 'hu' },
+      { label: 'Ελληνικά', code: 'el' },
     ],
     defaultLocale: 'pl',
     fallback: true,

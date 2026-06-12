@@ -7,9 +7,10 @@ const LOCALE_OPTIONS = [
   { label: 'Română', value: 'ro' },
   { label: 'Čeština', value: 'cs' },
   { label: 'Magyar', value: 'hu' },
+  { label: 'Ελληνικά', value: 'el' },
 ]
 
-const ALL_LOCALES = ['pl', 'en', 'de', 'ro', 'cs', 'hu']
+const ALL_LOCALES = ['pl', 'en', 'de', 'ro', 'cs', 'hu', 'el']
 
 /**
  * Per-store locale visibility fields.
