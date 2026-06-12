@@ -59,6 +59,6 @@ EXPOSE 3000
 ENV PORT=3000
 ENV HOSTNAME="0.0.0.0"
 
-COPY --from=builder --chown=nextjs:nodejs /app/scripts/migrate-startup.js ./migrate-startup.js
+COPY --from=builder --chown=nextjs:nodejs /app/scripts/migrate-startup.cjs ./migrate-startup.cjs
 
-CMD ["sh", "-c", "node migrate-startup.js; node server.js"]
+CMD ["sh", "-c", "node migrate-startup.cjs; node server.js"]
