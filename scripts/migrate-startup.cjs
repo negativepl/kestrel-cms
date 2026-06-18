@@ -60,6 +60,27 @@ const MIGRATIONS = [
       `
     ),
   },
+  {
+    name: '20260618_120000_mega_menu_featured_link_options',
+    // Adds Brand + Page link types to mega menu featured cards.
+    // ALTER TYPE ... ADD VALUE must run as standalone statements (array form).
+    up: [
+      `ALTER TYPE "public"."enum_mega_menu_featured_link_type" ADD VALUE IF NOT EXISTS 'brand';`,
+      `ALTER TYPE "public"."enum_mega_menu_featured_link_type" ADD VALUE IF NOT EXISTS 'page';`,
+      `DO $$ BEGIN
+         CREATE TYPE "public"."enum_mega_menu_featured_link_page" AS ENUM(
+           '/', '/new-products', '/bestsellers', '/sale', '/fastshipping', '/blog',
+           '/brands', '/contact', '/faq', '/about', '/shipping', '/returns',
+           '/payments', '/terms', '/privacy', '/b2b/nowosci', '/delivery-news',
+           '/new-brands', '/zamowienia-publiczne', '/integrations'
+         );
+       EXCEPTION WHEN duplicate_object THEN null; END $$;`,
+      `ALTER TABLE "mega_menu_featured"
+         ADD COLUMN IF NOT EXISTS "brand_id" numeric,
+         ADD COLUMN IF NOT EXISTS "brand_name" varchar,
+         ADD COLUMN IF NOT EXISTS "link_page" "enum_mega_menu_featured_link_page";`,
+    ],
+  },
 ]
 
 async function run() {
