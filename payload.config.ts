@@ -25,6 +25,7 @@ import { Branding } from './src/globals/Branding'
 // Endpoints
 import { translateHandler } from './src/endpoints/translate'
 import { getPrestashopCategories } from './src/endpoints/prestashopCategories'
+import { getPrestashopManufacturers } from './src/endpoints/prestashopManufacturers'
 import { revalidateEndpoint } from './src/endpoints/revalidate'
 
 const filename = fileURLToPath(import.meta.url)
@@ -124,6 +125,11 @@ export default buildConfig({
       path: '/prestashop-categories',
       method: 'get',
       handler: getPrestashopCategories,
+    },
+    {
+      path: '/prestashop-manufacturers',
+      method: 'get',
+      handler: getPrestashopManufacturers,
     },
     revalidateEndpoint,
   ],

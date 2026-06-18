@@ -54,10 +54,12 @@ export const MegaMenuFeatured: CollectionConfig = {
       defaultValue: 'category',
       options: [
         { label: 'Category', value: 'category' },
+        { label: 'Brand', value: 'brand' },
+        { label: 'Page', value: 'page' },
         { label: 'Custom URL', value: 'custom' },
       ],
       admin: {
-        description: 'Choose whether to link to a category or a custom URL',
+        description: 'Choose what this card links to',
       },
     },
     {
@@ -79,6 +81,59 @@ export const MegaMenuFeatured: CollectionConfig = {
       admin: {
         description: 'URL slug of the category (e.g., "nowosci", "bestsellery")',
         condition: (data) => data.linkType === 'category',
+      },
+    },
+    {
+      name: 'brandId',
+      type: 'number',
+      label: 'Brand (Manufacturer)',
+      admin: {
+        description: 'Pick a brand from PrestaShop',
+        condition: (data) => data.linkType === 'brand',
+        components: {
+          Field: '@/components/PrestaShopBrandField#PrestaShopBrandField',
+        },
+      },
+    },
+    {
+      name: 'brandName',
+      type: 'text',
+      label: 'Brand Name',
+      admin: {
+        description: 'Auto-filled from the selected brand; used to build the URL (e.g. "/brands/143-torras").',
+        condition: (data) => data.linkType === 'brand',
+        readOnly: true,
+      },
+    },
+    {
+      name: 'linkPage',
+      type: 'select',
+      label: 'Page',
+      options: [
+        { label: 'Homepage', value: '/' },
+        { label: 'New Products', value: '/new-products' },
+        { label: 'Bestsellers', value: '/bestsellers' },
+        { label: 'Sale', value: '/sale' },
+        { label: 'Fast Shipping', value: '/fastshipping' },
+        { label: 'Blog', value: '/blog' },
+        { label: 'Brands', value: '/brands' },
+        { label: 'Contact', value: '/contact' },
+        { label: 'FAQ', value: '/faq' },
+        { label: 'About', value: '/about' },
+        { label: 'Shipping Info', value: '/shipping' },
+        { label: 'Returns', value: '/returns' },
+        { label: 'Payments', value: '/payments' },
+        { label: 'Terms', value: '/terms' },
+        { label: 'Privacy', value: '/privacy' },
+        { label: "B2B What's New", value: '/b2b/nowosci' },
+        { label: 'Delivery News (B2B)', value: '/delivery-news' },
+        { label: 'New Brands (B2B)', value: '/new-brands' },
+        { label: 'Public Procurement', value: '/zamowienia-publiczne' },
+        { label: 'Integrations', value: '/integrations' },
+      ],
+      admin: {
+        condition: (data) => data.linkType === 'page',
+        description: 'Link will be automatically translated to the correct URL for each language.',
       },
     },
     {
