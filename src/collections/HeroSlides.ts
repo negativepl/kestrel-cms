@@ -90,11 +90,31 @@ export const HeroSlides: CollectionConfig = {
       },
     },
     {
+      name: 'brandId',
+      type: 'number',
+      label: 'Link to Brand (Manufacturer)',
+      admin: {
+        description: 'Optional: Click on slide will go to this brand page (used only if Slide Link is empty; takes precedence over Link to Category)',
+        components: {
+          Field: '@/components/PrestaShopBrandField#PrestaShopBrandField',
+        },
+      },
+    },
+    {
+      name: 'brandName',
+      type: 'text',
+      label: 'Brand Name',
+      admin: {
+        description: 'Auto-filled from the selected brand; used to build the URL (e.g. "/brands/143-torras").',
+        readOnly: true,
+      },
+    },
+    {
       name: 'categoryId',
       type: 'number',
       label: 'Link to Category',
       admin: {
-        description: 'Optional: Click on slide will go to this category (used only if Slide Link is empty)',
+        description: 'Optional: Click on slide will go to this category (used only if Slide Link and Brand are empty)',
         components: {
           Field: '@/components/PrestaShopCategoryField#PrestaShopCategoryField',
         },

@@ -81,6 +81,15 @@ const MIGRATIONS = [
          ADD COLUMN IF NOT EXISTS "link_page" "enum_mega_menu_featured_link_page";`,
     ],
   },
+  {
+    name: '20260702_130000_hero_slides_brand_link',
+    // Adds brand (manufacturer) link fields to hero slides.
+    up: `
+      ALTER TABLE "hero_slides"
+        ADD COLUMN IF NOT EXISTS "brand_id" numeric,
+        ADD COLUMN IF NOT EXISTS "brand_name" varchar;
+    `,
+  },
 ]
 
 async function run() {
