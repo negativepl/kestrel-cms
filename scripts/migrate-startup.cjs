@@ -90,6 +90,13 @@ const MIGRATIONS = [
         ADD COLUMN IF NOT EXISTS "brand_name" varchar;
     `,
   },
+  {
+    name: '20260911_110000_ai_generated_banner_flag',
+    // Adds the "AI-generated content" disclosure flag to every banner collection.
+    up: ['hero_slides', 'category_banners', 'mega_menu_featured', 'featured_categories', 'blog_banners'].map(
+      (table) => `ALTER TABLE "${table}" ADD COLUMN IF NOT EXISTS "ai_generated" boolean DEFAULT false;`
+    ),
+  },
 ]
 
 async function run() {

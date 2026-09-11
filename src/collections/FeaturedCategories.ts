@@ -1,5 +1,6 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import { storeVisibilityFields } from './fields/storeVisibility'
+import { aiGeneratedField } from './fields/aiGenerated'
 import type { CollectionConfig } from 'payload'
 
 export const FeaturedCategories: CollectionConfig = {
@@ -78,6 +79,7 @@ export const FeaturedCategories: CollectionConfig = {
       label: 'Active',
       defaultValue: true,
     },
+    aiGeneratedField,
     ...storeVisibilityFields,
   ],
 }

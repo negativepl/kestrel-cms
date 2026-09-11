@@ -1,5 +1,6 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import { storeVisibilityFields } from './fields/storeVisibility'
+import { aiGeneratedField } from './fields/aiGenerated'
 import type { CollectionConfig } from 'payload'
 
 export const BlogBanners: CollectionConfig = {
@@ -90,6 +91,7 @@ export const BlogBanners: CollectionConfig = {
       label: 'Active',
       defaultValue: true,
     },
+    aiGeneratedField,
     ...storeVisibilityFields,
     {
       type: 'collapsible',
