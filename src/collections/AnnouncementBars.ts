@@ -41,7 +41,8 @@ export const AnnouncementBars: CollectionConfig = {
       required: true,
       localized: true,
       admin: {
-        description: 'Announcement text displayed in the bar',
+        description:
+          'Announcement text displayed in the bar. Formatting: **bold**, [yellow]colored[/yellow] (yellow, orange, red, green, blue, pink, white, black) or a hex color [#ffcd00]text[/]. Can be combined: [yellow]**InPost+**[/yellow].',
       },
     },
     {

@@ -55,7 +55,7 @@ export const translateHandler: PayloadHandler = async (req) => {
           messages: [
             {
               role: 'system',
-              content: `You are a professional translator. Translate the following text from ${sourceLang} to ${targetLang}. Only return the translated text, nothing else. Keep the same tone and style. If the text contains brand names or technical terms, keep them as is.`,
+              content: `You are a professional translator. Translate the following text from ${sourceLang} to ${targetLang}. Only return the translated text, nothing else. Keep the same tone and style. If the text contains brand names or technical terms, keep them as is. Preserve formatting markup exactly: **bold** and color tags like [yellow]...[/yellow] or [#ffcd00]...[/] must stay in place around the corresponding translated words; never translate the tag names.`,
             },
             {
               role: 'user',
