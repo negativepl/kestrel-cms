@@ -97,6 +97,19 @@ const MIGRATIONS = [
       (table) => `ALTER TABLE "${table}" ADD COLUMN IF NOT EXISTS "ai_generated" boolean DEFAULT false;`
     ),
   },
+  {
+    name: '20261012_120000_ai_badge_position',
+    // Corner of the "AI" badge per banner. Nullable: older rows fall back to the
+    // storefront default for that banner type.
+    up: ['hero_slides', 'category_banners', 'mega_menu_featured', 'featured_categories', 'blog_banners'].flatMap(
+      (table) => [
+        `DO $$ BEGIN
+           CREATE TYPE "public"."enum_${table}_ai_badge_position" AS ENUM('top-left', 'top-right', 'bottom-left', 'bottom-right');
+         EXCEPTION WHEN duplicate_object THEN null; END $$;`,
+        `ALTER TABLE "${table}" ADD COLUMN IF NOT EXISTS "ai_badge_position" "enum_${table}_ai_badge_position";`,
+      ]
+    ),
+  },
 ]
 
 async function run() {

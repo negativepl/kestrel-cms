@@ -1,6 +1,6 @@
 import { revalidateAfterChange, revalidateAfterDelete } from '@/hooks/revalidateFrontend'
 import { storeVisibilityFields } from './fields/storeVisibility'
-import { aiGeneratedField } from './fields/aiGenerated'
+import { aiBadgePositionField, aiGeneratedField } from './fields/aiGenerated'
 import type { CollectionConfig } from 'payload'
 
 export const MegaMenuFeatured: CollectionConfig = {
@@ -173,6 +173,7 @@ export const MegaMenuFeatured: CollectionConfig = {
       defaultValue: true,
     },
     aiGeneratedField,
+    aiBadgePositionField('bottom-left'),
     ...storeVisibilityFields,
   ],
 }
